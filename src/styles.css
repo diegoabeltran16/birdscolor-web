@@ -80,6 +80,7 @@ body::before {
     to { transform: rotate(360deg); }
 }
 
+/* Ajustes para dispositivos móviles */
 @media (max-width: 600px) {
     .icono {
         width: 100px; /* Reducir el tamaño del pollito en móviles */
