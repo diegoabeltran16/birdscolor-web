@@ -7,21 +7,30 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="background"></div> <!-- Fondo animado -->
+    <!-- Fondo animado de la rueda de color en tonos pastel -->
+    <div class="background"></div>
+    
+    <!-- Contenedor principal del contenido -->
     <div class="container">
+        <!-- Elemento <picture> para carga optimizada de imágenes según la resolución del dispositivo -->
         <picture>
+            <!-- Versión WebP de la imagen para mejor compresión y calidad en navegadores modernos -->
             <source srcset="images/pollito-1024.webp" type="image/webp">
+            <!-- Imagen del pollito con diferentes resoluciones para adaptación responsiva -->
             <img src="images/pollito-1024.png" 
                  srcset="images/pollito-480.png 480w, images/pollito-768.png 768w, images/pollito-1024.png 1024w" 
                  sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1024px" 
-                 loading="lazy" 
+                 loading="lazy"  <!-- Carga diferida para mejorar rendimiento -->
                  alt="Pollito" 
                  class="icono" 
                  id="icono">
         </picture>
-        <!-- Spinner oculto inicialmente -->
+        
+        <!-- Spinner de carga (oculto por defecto) para mostrar antes de la redirección -->
         <div id="spinner" class="spinner" style="display: none;"></div>
     </div>
+    
+    <!-- Script de interacción con el usuario -->
     <script src="script.js"></script>
 </body>
 </html>
