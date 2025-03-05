@@ -7,17 +7,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <picture>
-        <source srcset="images/pollito-1024.webp" type="image/webp">
-        <img src="images/pollito-1024.png" 
-             srcset="images/pollito-480.png 480w, images/pollito-768.png 768w, images/pollito-1024.png 1024w" 
-             sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1024px" 
-             loading="lazy" 
-             alt="Pollito" 
-             class="icono" 
-             id="icono">
-    </picture>
-    
+    <div class="background"></div> <!-- Fondo animado -->
+    <div class="container">
+        <picture>
+            <source srcset="images/pollito-1024.webp" type="image/webp">
+            <img src="images/pollito-1024.png" 
+                 srcset="images/pollito-480.png 480w, images/pollito-768.png 768w, images/pollito-1024.png 1024w" 
+                 sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1024px" 
+                 loading="lazy" 
+                 alt="Pollito" 
+                 class="icono" 
+                 id="icono">
+        </picture>
+        <!-- Spinner oculto inicialmente -->
+        <div id="spinner" class="spinner" style="display: none;"></div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
