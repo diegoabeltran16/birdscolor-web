@@ -6,8 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const ANIM_BOUNCE_DURATION = 500; // Duración de la animación bounce en ms
-    const REDIRECT_DELAY = 1000;       // Tiempo antes de redirigir en ms
+    const REDIRECT_DELAY = 1000; // Tiempo antes de redirigir en ms
 
     // Función para guardar el evento en localStorage en caso de error
     const saveEventLocally = (eventData) => {
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("pendingEvents", JSON.stringify(events));
     };
 
-    // Función para enviar datos del clic
+    // Función para enviar datos del clic a Power Automate y posteriormente a GA4
     const sendClickEvent = async () => {
         const eventData = {
             event: "click_pollito",
@@ -32,6 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error al enviar el evento, guardando localmente.", error);
             saveEventLocally(eventData);
         }
+        
+        // Enviar evento a Google Analytics
+        if (typeof gtag === "function") {
+            gtag('event', 'click_pollito', {
+                'event_category': 'Interacción',
+                'event_label': 'Icono Pollito',
+                'value': 1
+            });
+        }
     };
 
     // Función para manejar el clic en el pollito
@@ -39,28 +47,29 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("🐥 Clic en el pollito registrado");
         sendClickEvent();
 
-        // Aplicar animación bounce al pollito
-        pollito.style.animation = "bounce 0.5s";
-        
-        // Cuando finalice la animación bounce, se oculta el pollito y se muestra el spinner
+        // Agregar la clase "bounce" para iniciar la animación
+        pollito.classList.add("bounce");
+
+        // Al finalizar la animación bounce, oculta el ícono y muestra el spinner
         pollito.addEventListener("animationend", function restoreAnimation(e) {
             if (e.animationName === "bounce") {
                 pollito.style.display = "none";
                 spinner.style.display = "block";
+                pollito.classList.remove("bounce"); // Remueve la clase para permitir reutilización
                 pollito.removeEventListener("animationend", restoreAnimation);
             }
         });
 
         // Redirigir a la página final después del retardo definido
         setTimeout(() => {
-            window.location.href = "final.html";
+            window.location.href = "simbiosis_es.html";
         }, REDIRECT_DELAY);
     };
 
     pollito.addEventListener("click", handlePollitoClick);
 });
 
-// Agregar animación bounce dinámicamente (alternativamente, se puede incluir en el CSS)
+// Agregar la animación bounce dinámicamente (opcional si se define en CSS)
 const style = document.createElement("style");
 style.innerHTML = `
     @keyframes bounce {
