@@ -78,3 +78,28 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+
+// Función para reintentar enviar eventos guardados en localStorage
+const resendPendingEvents = async () => {
+    const events = JSON.parse(localStorage.getItem("pendingEvents")) || [];
+    if (events.length === 0) return;
+    for (let i = 0; i < events.length; i++) {
+        try {
+            await fetch("https://powerautomate-webhook.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(events[i])
+            });
+            // Si se envía correctamente, eliminar el evento enviado
+            events.splice(i, 1);
+            i--; // Ajustar el índice tras eliminar
+        } catch (error) {
+            console.error("Error al reenviar evento pendiente:", error);
+            break; // Si falla, salir y reintentar más tarde
+        }
+    }
+    localStorage.setItem("pendingEvents", JSON.stringify(events));
+};
+
+// Escuchar el evento "online" para reintentar el envío de eventos pendientes
+window.addEventListener("online", resendPendingEvents);
