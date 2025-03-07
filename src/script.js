@@ -1,3 +1,8 @@
+// Definimos la función de redirección de forma global
+window.redirectTo = function(url) {
+    window.location.href = url;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     const pollito = document.getElementById("icono");
     const spinner = document.getElementById("spinner");
@@ -42,14 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Extraemos la funcionalidad de redirección en una función separada para facilitar las pruebas
-    const redirectTo = (url) => {
-        window.location.href = url;
-    };
-
-    // Hacemos que la función de redirección sea accesible globalmente para poder stubearla en las pruebas
-    window.redirectTo = redirectTo;
-
     // Función para manejar el clic en el pollito
     const handlePollitoClick = () => {
         console.log("🐥 Clic en el pollito registrado");
@@ -63,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.animationName === "bounce") {
                 pollito.style.display = "none";
                 spinner.style.display = "block";
-                pollito.classList.remove("bounce"); // Remueve la clase para permitir reutilización
+                pollito.classList.remove("bounce"); // Permite reutilizar la animación
                 pollito.removeEventListener("animationend", restoreAnimation);
             }
         });
 
-        // Redirigir a la página de Simbiosis tras el retardo definido
+        // Redirigir a la página de Simbiosis tras el retardo definido, usando la función global.
         setTimeout(() => {
-            redirectTo("simbiosis_es.html");
+            window.redirectTo("simbiosis_es.html");
         }, REDIRECT_DELAY);
     };
 
