@@ -42,6 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Extraemos la funcionalidad de redirección en una función separada para facilitar las pruebas
+    const redirectTo = (url) => {
+        window.location.href = url;
+    };
+
+    // Hacemos que la función de redirección sea accesible globalmente para poder stubearla en las pruebas
+    window.redirectTo = redirectTo;
+
     // Función para manejar el clic en el pollito
     const handlePollitoClick = () => {
         console.log("🐥 Clic en el pollito registrado");
@@ -60,9 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Redirigir a la página final después del retardo definido
+        // Redirigir a la página de Simbiosis tras el retardo definido
         setTimeout(() => {
-            window.location.href = "simbiosis_es.html";
+            redirectTo("simbiosis_es.html");
         }, REDIRECT_DELAY);
     };
 
@@ -78,28 +86,3 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
-
-// Función para reintentar enviar eventos guardados en localStorage
-const resendPendingEvents = async () => {
-    const events = JSON.parse(localStorage.getItem("pendingEvents")) || [];
-    if (events.length === 0) return;
-    for (let i = 0; i < events.length; i++) {
-        try {
-            await fetch("https://powerautomate-webhook.com", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(events[i])
-            });
-            // Si se envía correctamente, eliminar el evento enviado
-            events.splice(i, 1);
-            i--; // Ajustar el índice tras eliminar
-        } catch (error) {
-            console.error("Error al reenviar evento pendiente:", error);
-            break; // Si falla, salir y reintentar más tarde
-        }
-    }
-    localStorage.setItem("pendingEvents", JSON.stringify(events));
-};
-
-// Escuchar el evento "online" para reintentar el envío de eventos pendientes
-window.addEventListener("online", resendPendingEvents);
