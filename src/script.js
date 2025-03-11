@@ -1,9 +1,12 @@
 // Definimos la función de redirección de forma global
 window.redirectTo = function(url) {
+    console.log("Redirigiendo a:", url);
     window.location.href = url;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado en script.js");
+
     const pollito = document.getElementById("icono");
     const spinner = document.getElementById("spinner");
     if (!pollito || !spinner) {
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Redirigir a la página de Simbiosis tras el retardo definido, usando la función global.
+        // Redirigir a la página de Simbiosis tras el retardo definido.
         setTimeout(() => {
             window.redirectTo("simbiosis_es.html");
         }, REDIRECT_DELAY);
