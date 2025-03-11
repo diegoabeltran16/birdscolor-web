@@ -1,9 +1,12 @@
 // Definimos la función de redirección de forma global
 window.redirectTo = function(url) {
+    console.log("Redirigiendo a:", url);
     window.location.href = url;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado en script.js");
+
     const pollito = document.getElementById("icono");
     const spinner = document.getElementById("spinner");
     if (!pollito || !spinner) {
@@ -13,14 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const REDIRECT_DELAY = 1000; // Tiempo antes de redirigir en ms
 
-    // Función para guardar el evento en localStorage en caso de error
-    const saveEventLocally = (eventData) => {
-        const events = JSON.parse(localStorage.getItem("pendingEvents")) || [];
-        events.push(eventData);
-        localStorage.setItem("pendingEvents", JSON.stringify(events));
-    };
-
-    // Función para enviar datos del clic a Power Automate y posteriormente a GA4
+    // Función para enviar datos del clic (ejemplo, similar a lo que ya tienes)
     const sendClickEvent = async () => {
         const eventData = {
             event: "click_pollito",
@@ -33,8 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(eventData)
             });
         } catch (error) {
-            console.error("Error al enviar el evento, guardando localmente.", error);
-            saveEventLocally(eventData);
+            console.error("Error al enviar el evento.", error);
+            // Aquí podrías guardar el evento en localStorage si lo deseas.
         }
         
         // Enviar evento a Google Analytics
@@ -60,21 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.animationName === "bounce") {
                 pollito.style.display = "none";
                 spinner.style.display = "block";
-                pollito.classList.remove("bounce"); // Permite reutilizar la animación
+                pollito.classList.remove("bounce");
                 pollito.removeEventListener("animationend", restoreAnimation);
             }
         });
 
-        // Redirigir a la página de Simbiosis tras el retardo definido, usando la función global.
+        // Consulta el idioma guardado y redirige en consecuencia
+        const lang = localStorage.getItem("idioma") || "es"; // "es" como predeterminado
         setTimeout(() => {
-            window.redirectTo("simbiosis_es.html");
+            window.redirectTo(`simbiosis_${lang}.html`);
         }, REDIRECT_DELAY);
     };
 
     pollito.addEventListener("click", handlePollitoClick);
 });
 
-// Agregar la animación bounce dinámicamente (opcional si se define en CSS)
+// Opcional: Agregar la animación bounce dinámicamente (si no está en CSS)
 const style = document.createElement("style");
 style.innerHTML = `
     @keyframes bounce {
