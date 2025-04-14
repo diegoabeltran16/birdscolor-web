@@ -6,6 +6,8 @@
   "directories": {
     "test": "test"
   },
+  
+  "type": "module",
   "scripts": {
     "test": "mocha test"
   },

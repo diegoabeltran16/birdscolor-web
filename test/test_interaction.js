@@ -1,9 +1,9 @@
 // En test_interaction.js (la versión final de las pruebas unitarias)
-const { expect } = require('chai');
-const { JSDOM, ResourceLoader, VirtualConsole } = require('jsdom');
-const sinon = require('sinon');
-const fs = require('fs');
-const path = require('path');
+import { expect } from 'chai';
+import { JSDOM, ResourceLoader, VirtualConsole } from 'jsdom';
+import sinon from 'sinon';
+import fs from 'node:fs';
+import path from 'node:path';
 
 describe('Interacción con el ícono del pollito', function() {
   this.retries(3);
