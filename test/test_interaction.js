@@ -30,12 +30,14 @@ describe('Interacción con el ícono del pollito', function () {
     window = dom.window;
     document = window.document;
 
-    // Simulamos la lógica de redirección del script
-    const inlineScript = `
-      function redirectTo(url) {
-        window.__redirectedUrl = url;
-      }
+    // 💡 Definimos redirectTo directamente en el entorno simulado
+    window.redirectTo = (url) => {
+      window.__redirectedUrl = url;
+    };
 
+    // ⬇️ Inyectamos el comportamiento del pollito
+    const script = document.createElement("script");
+    script.textContent = `
       document.getElementById("icono").addEventListener("click", function() {
         document.getElementById("spinner").style.display = "block";
         setTimeout(() => {
@@ -43,10 +45,9 @@ describe('Interacción con el ícono del pollito', function () {
         }, 1000);
       });
     `;
-    const script = document.createElement("script");
-    script.textContent = inlineScript;
     document.body.appendChild(script);
 
+    // 🔧 Inicializamos los elementos del DOM
     pollito = document.getElementById("icono");
     spinner = document.getElementById("spinner");
     window.__redirectedUrl = "";
@@ -58,7 +59,7 @@ describe('Interacción con el ícono del pollito', function () {
 
   it('Debe redirigir después del tiempo definido (diagnóstico con fake timers)', () => {
     pollito.dispatchEvent(new window.Event("click", { bubbles: true }));
-    clock.tick(1050);
+    clock.tick(REDIRECT_DELAY + 50);
     expect(window.__redirectedUrl).to.equal(EXPECTED_REDIRECT);
   });
 });
