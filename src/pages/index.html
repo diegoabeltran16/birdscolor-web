@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>BirdsColor - Interactivo</title>
   <link rel="stylesheet" href="../assets/styles.css">
 
@@ -24,6 +24,7 @@
 
   <div class="background"></div>
   <div class="container">
+    <!-- Imagen del pollito -->
     <picture>
       <source srcset="../assets/images/pollito-1024.webp" type="image/webp">
       <img src="../assets/images/pollito-1024.png"
@@ -38,10 +39,14 @@
            class="icono"
            id="icono">
     </picture>
-    <div id="spinner" class="spinner" style="display: none;"></div>
+
+    <!-- Spinner centrado usando wrapper -->
+    <div id="spinner" class="spinner-wrapper" style="display: none;">
+      <div class="spinner" role="status" aria-label="Cargando..."></div>
+    </div>
   </div>
 
-  <!-- Cargamos los módulos en el orden: detección de idioma, interacción, y banner de cookies -->
+  <!-- Módulos: idioma, eventos, cookies -->
   <script src="../modules/language.js"></script>
   <script src="../script.js"></script>
   <script src="../modules/cookies.js"></script>
