@@ -22,7 +22,7 @@ describe('Interacción con el ícono del pollito', function() {
     clock = sinon.useFakeTimers({
       toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"]
     });
-    const htmlPath = path.join(__dirname, '../src/index.html');
+    const htmlPath = path.join(__dirname, '../src/pages/index.html');
     if (!fs.existsSync(htmlPath)) {
       throw new Error(`Archivo HTML no encontrado: ${htmlPath}`);
     }
