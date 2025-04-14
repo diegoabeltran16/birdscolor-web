@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BirdsColor - Interactivo</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NQMNKF5J6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8NQMNKF5J6');
+  </script>
+</head>
+<body>
+  <!-- Selector manual de idioma en la página principal -->
+  <div class="language-selector" style="position: absolute; top: 10px; right: 10px; z-index: 2;">
+    <button onclick="cambiarIdioma('es')">Español</button>
+    <button onclick="cambiarIdioma('en')">English</button>
+  </div>
+
+  <div class="background"></div>
+  <div class="container">
+    <picture>
+      <source srcset="../assets/images/pollito-1024.webp" type="image/webp">
+      <img src="../assets/images/pollito-1024.png"
+           srcset="
+             ../assets/images/pollito-480.png 480w,
+             ../assets/images/pollito-768.png 768w,
+             ../assets/images/pollito-1024.png 1024w
+           "
+           sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1024px"
+           loading="lazy"
+           alt="Pollito"
+           class="icono"
+           id="icono">
+    </picture>
+    <div id="spinner" class="spinner" style="display: none;"></div>
+  </div>
+
+  <!-- Cargamos los módulos en el orden: detección de idioma, interacción, y banner de cookies -->
+  <script src="../modules/language.js"></script>
+  <script src="../script.js"></script>
+  <script src="../modules/cookies.js"></script>
+</body>
+</html>

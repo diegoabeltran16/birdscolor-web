@@ -65,7 +65,12 @@ body::before {
     100% { transform: scale(1); }
 }
 
-/* Clase para la animación bounce (usada en JS) */
+/* Animación bounce: efecto puntual para feedback al clic */
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
 .bounce {
     animation: bounce 0.5s;
 }

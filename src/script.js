@@ -1,9 +1,12 @@
 // Definimos la función de redirección de forma global
 window.redirectTo = function(url) {
+    console.log("Redirigiendo a:", url);
     window.location.href = url;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado en script.js");
+
     const pollito = document.getElementById("icono");
     const spinner = document.getElementById("spinner");
     if (!pollito || !spinner) {
@@ -11,16 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const REDIRECT_DELAY = 1000; // Tiempo antes de redirigir en ms
+    const REDIRECT_DELAY = 1000; // Tiempo antes de mostrar el spinner (opcional)
 
-    // Función para guardar el evento en localStorage en caso de error
-    const saveEventLocally = (eventData) => {
-        const events = JSON.parse(localStorage.getItem("pendingEvents")) || [];
-        events.push(eventData);
-        localStorage.setItem("pendingEvents", JSON.stringify(events));
-    };
-
-    // Función para enviar datos del clic a Power Automate y posteriormente a GA4
+    // Función para enviar datos del clic (puedes mantener la lógica existente)
     const sendClickEvent = async () => {
         const eventData = {
             event: "click_pollito",
@@ -33,11 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(eventData)
             });
         } catch (error) {
-            console.error("Error al enviar el evento, guardando localmente.", error);
-            saveEventLocally(eventData);
+            console.error("Error al enviar el evento.", error);
+            // Aquí podrías guardar el evento localmente si lo deseas.
         }
         
-        // Enviar evento a Google Analytics
         if (typeof gtag === "function") {
             gtag('event', 'click_pollito', {
                 'event_category': 'Interacción',
@@ -52,29 +47,35 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("🐥 Clic en el pollito registrado");
         sendClickEvent();
 
-        // Agregar la clase "bounce" para iniciar la animación
+        // Agregar la clase "bounce" para feedback visual
         pollito.classList.add("bounce");
 
-        // Al finalizar la animación bounce, oculta el ícono y muestra el spinner
         pollito.addEventListener("animationend", function restoreAnimation(e) {
             if (e.animationName === "bounce") {
                 pollito.style.display = "none";
                 spinner.style.display = "block";
-                pollito.classList.remove("bounce"); // Permite reutilizar la animación
+                pollito.classList.remove("bounce");
                 pollito.removeEventListener("animationend", restoreAnimation);
             }
         });
 
-        // Redirigir a la página de Simbiosis tras el retardo definido, usando la función global.
+        // En lugar de redirigir inmediatamente, mostramos el banner de cookies
+        // Se asume que cookies.js define la función global showCookieBanner()
         setTimeout(() => {
-            window.redirectTo("simbiosis_es.html");
+            if (typeof showCookieBanner === "function") {
+                showCookieBanner();
+            } else {
+                console.warn("No se encontró la función showCookieBanner(). Redirigiendo de forma predeterminada.");
+                const lang = localStorage.getItem("idioma") || "es";
+                window.redirectTo(`simbiosis_${lang}.html`);
+            }
         }, REDIRECT_DELAY);
     };
 
     pollito.addEventListener("click", handlePollitoClick);
 });
 
-// Agregar la animación bounce dinámicamente (opcional si se define en CSS)
+// Opcional: Agregar la animación bounce dinámicamente (si no está en CSS)
 const style = document.createElement("style");
 style.innerHTML = `
     @keyframes bounce {
