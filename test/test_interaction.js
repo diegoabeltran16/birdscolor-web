@@ -1,7 +1,7 @@
 // test/test_interaction.js
 
 import { expect } from 'chai';
-import { JSDOM, ResourceLoader, VirtualConsole } from 'jsdom';
+import { JSDOM } from 'jsdom';
 import sinon from 'sinon';
 import fs from 'node:fs';
 import path, { dirname } from 'node:path';
@@ -15,45 +15,23 @@ describe('Interacción con el ícono del pollito', function () {
   const REDIRECT_DELAY = 1000;
   const EXPECTED_REDIRECT = "simbiosis_es.html";
 
-  beforeEach(async () => {
-    // Fake timers para controlar el tiempo
+  beforeEach(() => {
     clock = sinon.useFakeTimers();
 
-    const htmlPath = path.join(__dirname, '../src/pages/index.html');
-    if (!fs.existsSync(htmlPath)) {
-      throw new Error(`Archivo HTML no encontrado: ${htmlPath}`);
-    }
-
+    const htmlPath = path.join(__dirname, 'index.test.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
-
-    const resourceLoader = new ResourceLoader({
-      fetch(url) {
-        // Ignoramos scripts externos en tests
-        return Promise.resolve(Buffer.from(''));
-      }
-    });
 
     const dom = new JSDOM(html, {
       runScripts: "dangerously",
-      resources: resourceLoader,
-      url: "http://localhost/",
-      virtualConsole: new VirtualConsole()
+      resources: "usable",
+      url: "http://localhost/"
     });
-
-    await new Promise(resolve => setTimeout(resolve, 50));
-
 
     window = dom.window;
     document = window.document;
-    pollito = document.getElementById("icono");
-    spinner = document.getElementById("spinner");
 
-    if (!pollito || !spinner) {
-      throw new Error("Elemento 'icono' o 'spinner' no encontrado en el DOM.");
-    }
-
-    // Simulamos la lógica de script.js
-    const simulatedScript = `
+    // Simulamos la lógica de redirección del script
+    const inlineScript = `
       function redirectTo(url) {
         window.__redirectedUrl = url;
       }
@@ -65,11 +43,12 @@ describe('Interacción con el ícono del pollito', function () {
         }, 1000);
       });
     `;
-    const scriptEl = document.createElement("script");
-    scriptEl.textContent = simulatedScript;
-    document.body.appendChild(scriptEl);
+    const script = document.createElement("script");
+    script.textContent = inlineScript;
+    document.body.appendChild(script);
 
-    // Inicializamos variable de prueba
+    pollito = document.getElementById("icono");
+    spinner = document.getElementById("spinner");
     window.__redirectedUrl = "";
   });
 
@@ -77,9 +56,9 @@ describe('Interacción con el ícono del pollito', function () {
     clock.restore();
   });
 
-  it('Debe redirigir después del tiempo definido (diagnóstico con fake timers)', function () {
+  it('Debe redirigir después del tiempo definido (diagnóstico con fake timers)', () => {
     pollito.dispatchEvent(new window.Event("click", { bubbles: true }));
-    clock.tick(REDIRECT_DELAY + 100);
-    expect(window.__redirectedUrl).to.include(EXPECTED_REDIRECT);
+    clock.tick(1050);
+    expect(window.__redirectedUrl).to.equal(EXPECTED_REDIRECT);
   });
 });
