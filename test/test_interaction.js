@@ -40,9 +40,8 @@ describe('Interacción con el ícono del pollito', function () {
       virtualConsole: new VirtualConsole()
     });
 
-    await new Promise(resolve => {
-      dom.window.document.addEventListener("DOMContentLoaded", resolve);
-    });
+    await new Promise(resolve => setTimeout(resolve, 50));
+
 
     window = dom.window;
     document = window.document;
