@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const REDIRECT_DELAY = 1000; // Tiempo antes de redirigir en ms
+    const REDIRECT_DELAY = 1000; // Tiempo antes de mostrar el spinner (opcional)
 
-    // Función para enviar datos del clic (ejemplo, similar a lo que ya tienes)
+    // Función para enviar datos del clic (puedes mantener la lógica existente)
     const sendClickEvent = async () => {
         const eventData = {
             event: "click_pollito",
@@ -30,10 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         } catch (error) {
             console.error("Error al enviar el evento.", error);
-            // Aquí podrías guardar el evento en localStorage si lo deseas.
+            // Aquí podrías guardar el evento localmente si lo deseas.
         }
         
-        // Enviar evento a Google Analytics
         if (typeof gtag === "function") {
             gtag('event', 'click_pollito', {
                 'event_category': 'Interacción',
@@ -48,10 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("🐥 Clic en el pollito registrado");
         sendClickEvent();
 
-        // Agregar la clase "bounce" para iniciar la animación
+        // Agregar la clase "bounce" para feedback visual
         pollito.classList.add("bounce");
 
-        // Al finalizar la animación bounce, oculta el ícono y muestra el spinner
         pollito.addEventListener("animationend", function restoreAnimation(e) {
             if (e.animationName === "bounce") {
                 pollito.style.display = "none";
@@ -61,10 +59,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Consulta el idioma guardado y redirige en consecuencia
-        const lang = localStorage.getItem("idioma") || "es"; // "es" como predeterminado
+        // En lugar de redirigir inmediatamente, mostramos el banner de cookies
+        // Se asume que cookies.js define la función global showCookieBanner()
         setTimeout(() => {
-            window.redirectTo(`simbiosis_${lang}.html`);
+            if (typeof showCookieBanner === "function") {
+                showCookieBanner();
+            } else {
+                console.warn("No se encontró la función showCookieBanner(). Redirigiendo de forma predeterminada.");
+                const lang = localStorage.getItem("idioma") || "es";
+                window.redirectTo(`simbiosis_${lang}.html`);
+            }
         }, REDIRECT_DELAY);
     };
 
