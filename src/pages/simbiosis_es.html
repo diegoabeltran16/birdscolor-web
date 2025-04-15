@@ -3,11 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simbiosis - Español</title>
+  <title>Simbiosis</title>
   <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
-  <h1>Bienvenido a la Simbiosis en Español</h1>
-  <p>Aquí iría el contenido en español.</p>
+
+  <div class="venn-container">
+    <div class="venn-row">
+      <!-- Círculo Izquierdo – Cerebro -->
+      <div class="venn-item" id="cerebro">
+        <div class="outer-ring ring-left"></div>
+        <div class="venn-circle spin-right">🧠</div>
+        <span class="label-text" id="txt-cerebro">Cerebro</span>
+      </div>
+
+      <!-- Círculo Derecho – Cuerpo -->
+      <div class="venn-item" id="cuerpo">
+        <div class="outer-ring ring-right"></div>
+        <div class="venn-circle spin-left">💪</div>
+        <span class="label-text" id="txt-cuerpo">Cuerpo</span>
+      </div>
+    </div>
+
+    <!-- Círculo Inferior – Comunidad -->
+    <div class="venn-item" id="comunidad">
+      <div class="outer-ring ring-left"></div>
+      <div class="venn-circle" style="animation: heartbeat 2s ease-in-out infinite;">🌍</div>
+      <span class="label-text" id="txt-comunidad">Comunidad</span>
+    </div>
+  </div>
+
+  <script>
+    // Detectar idioma
+    const lang = localStorage.getItem("idioma") || "es";
+
+    // Diccionario multilenguaje
+    const textos = {
+      es: { cerebro: "Cerebro", cuerpo: "Cuerpo", comunidad: "Comunidad" },
+      en: { cerebro: "Mind", cuerpo: "Body", comunidad: "Community" }
+    };
+    const t = textos[lang];
+
+    // Insertar textos
+    document.getElementById("txt-cerebro").textContent = t.cerebro;
+    document.getElementById("txt-cuerpo").textContent = t.cuerpo;
+    document.getElementById("txt-comunidad").textContent = t.comunidad;
+
+    // Redirecciones simbióticas
+    document.getElementById("cerebro").addEventListener("click", () => {
+      window.location.href = `tiddly_cerebro_${lang}.html`;
+    });
+
+    document.getElementById("cuerpo").addEventListener("click", () => {
+      window.location.href = `tiddly_cuerpo_${lang}.html`;
+    });
+
+    document.getElementById("comunidad").addEventListener("click", () => {
+      window.location.href = `comunidad_${lang}.html`;
+    });
+  </script>
+
 </body>
 </html>

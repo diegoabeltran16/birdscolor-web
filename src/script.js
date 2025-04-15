@@ -84,3 +84,87 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+
+// 🧠 script.js – lógica compartida para index y simbiosis
+
+window.redirectTo = function(url) {
+    console.log("Redirigiendo a:", url);
+    window.location.href = url;
+  };
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM completamente cargado en script.js");
+  
+    const lang = localStorage.getItem("idioma") || "es";
+    const textos = {
+      es: {
+        cerebro: "Cerebro",
+        cuerpo: "Cuerpo",
+        comunidad: "Comunidad"
+      },
+      en: {
+        cerebro: "Mind",
+        cuerpo: "Body",
+        comunidad: "Community"
+      }
+    };
+    const t = textos[lang];
+  
+    // 🌐 Aplicar textos si los spans existen
+    const spanMap = {
+      "circle-left": t.cerebro,
+      "circle-right": t.cuerpo,
+      "circle-bottom": t.comunidad
+    };
+  
+    for (const [id, texto] of Object.entries(spanMap)) {
+      const el = document.querySelector(`#${id} .label`);
+      if (el) el.textContent = texto;
+    }
+  
+    // 🌀 Redirección según clic
+    const redirectMap = {
+      "circle-left": `tiddly_cerebro_${lang}.html`,
+      "circle-right": `tiddly_cuerpo_${lang}.html`,
+      "circle-bottom": `comunidad_${lang}.html`
+    };
+  
+    for (const [id, url] of Object.entries(redirectMap)) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("click", () => {
+          // Aquí podrías validar cookiesConsent si lo deseas
+          window.redirectTo(url);
+        });
+      }
+    }
+  
+    // 🐥 Mantiene compatibilidad con la lógica del pollito
+    const pollito = document.getElementById("icono");
+    const spinner = document.getElementById("spinner");
+    if (pollito && spinner) {
+      const REDIRECT_DELAY = 1000;
+      pollito.addEventListener("click", () => {
+        console.log("🐥 Clic en el pollito registrado");
+        pollito.classList.add("bounce");
+  
+        pollito.addEventListener("animationend", function restoreAnimation(e) {
+          if (e.animationName === "bounce") {
+            pollito.style.display = "none";
+            spinner.style.display = "block";
+            pollito.classList.remove("bounce");
+            pollito.removeEventListener("animationend", restoreAnimation);
+          }
+        });
+  
+        setTimeout(() => {
+          if (typeof showCookieBanner === "function") {
+            showCookieBanner();
+          } else {
+            window.redirectTo(`simbiosis_${lang}.html`);
+          }
+        }, REDIRECT_DELAY);
+      });
+    }
+  });
+  

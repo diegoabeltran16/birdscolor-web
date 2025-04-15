@@ -8,17 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const textos = {
       es: {
         mensaje: "Este sitio utiliza cookies para mejorar tu experiencia. ¿Aceptas?",
-        aceptar: "Aceptar todas",
-        esenciales: "Solo esenciales",
+        aceptar: "Aceptar",
+        esenciales: "Esenciales",
         rechazar: "Rechazar",
-        elegir: "Elegir cookies"
+        elegir: "Elegir"
       },
       en: {
         mensaje: "This site uses cookies to improve your experience. Do you accept?",
-        aceptar: "Accept all",
-        esenciales: "Essentials only",
+        aceptar: "Accept",
+        esenciales: "Essentials",
         rechazar: "Reject",
-        elegir: "Choose cookies"
+        elegir: "Choose"
       }
     };
   
@@ -28,26 +28,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const banner = document.createElement("div");
     banner.id = "cookie-banner";
     Object.assign(banner.style, {
-      position: "fixed",
-      bottom: "0",
-      left: "0",
-      right: "0",
-      backgroundColor: "#fff",
-      borderTop: "1px solid #ccc",
-      padding: "20px",
-      textAlign: "center",
-      zIndex: "1000",
-      display: "none"
-    });
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+        right: "0",
+        backgroundColor: "rgba(255, 255, 255, 0.8)", // fondo semi-transparente
+        borderTop: "2px solid #FFD6A5", // línea pastel
+        padding: "20px",
+        textAlign: "center",
+        zIndex: "1000",
+        display: "none",
+        backdropFilter: "blur(6px)", // efecto glass
+        borderRadius: "12px 12px 0 0", // esquinas suaves
+        color: "#333", // texto visible pero no negro
+        boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)" // profundidad sutil
+      });
+      
   
     // 📄 4. Construir contenido HTML traducido
     banner.innerHTML = `
-      <p>${t.mensaje}</p>
-      <button id="accept-cookies">${t.aceptar}</button>
-      <button id="accept-essential">${t.esenciales}</button>
-      <button id="reject-cookies">${t.rechazar}</button>
-      <button id="choose-cookies">${t.elegir}</button>
-    `;
+    <p style="font-size: 1.1rem; margin-bottom: 10px;">${t.mensaje}</p>
+    <div>
+    <button class="cookie-button" id="accept-cookies">✅ ${t.aceptar}</button>
+    <button class="cookie-button" id="accept-essential">🍪 ${t.esenciales}</button>
+    <button class="cookie-button" id="reject-cookies">❌ ${t.rechazar}</button>
+    <button class="cookie-button" id="choose-cookies">🎛️ ${t.elegir}</button>
+  </div>
+`;
+
   
     document.body.appendChild(banner);
   

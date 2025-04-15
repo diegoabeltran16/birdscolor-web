@@ -123,3 +123,118 @@ body::before {
         touch-action: none;
     }
 }
+
+/* 📱 Boton de cookies */
+.cookie-button {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    margin: 5px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+  
+  .cookie-button:hover {
+    background-color: #CAFFBF; /* verde pastel suave */
+    border-color: #A0C4FF;
+  }
+  
+/* 📱 Responsive: tablets y móviles el boton de cookies */
+
+  @media (max-width: 600px) {
+    #cookie-banner {
+      font-size: 0.95rem;
+      padding: 15px;
+    }
+  
+    #cookie-banner p {
+      margin-bottom: 12px;
+    }
+  
+    #cookie-banner .cookie-button {
+      display: block;
+      width: 100%;
+      margin: 6px 0;
+      font-size: 1rem;
+    }
+  }
+  
+  /* 🌀 Módulo 4 – Navegación Simbiótica - Venn Interactivo */
+
+  .venn-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+  }
+  
+  .venn-circle {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Posiciones relativas tipo Venn */
+  #circle-left {
+    top: 100px;
+    left: 40px;
+    transform-origin: top right;
+  }
+  
+  #circle-right {
+    top: 100px;
+    right: 40px;
+    transform-origin: top left;
+  }
+  
+  #circle-bottom {
+    top: 180px;
+    left: 130px;
+    transform-origin: center;
+  }
+  
+  /* Animaciones */
+  .spin-left {
+    animation: spinLeft 10s linear infinite;
+  }
+  .spin-right {
+    animation: spinRight 10s linear infinite;
+  }
+  .heartbeat {
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+  
+  /* Keyframes */
+  @keyframes spinRight {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes spinLeft {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  .label {
+    position: absolute;
+    bottom: -30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
