@@ -164,6 +164,66 @@ body::before {
   
   /* 🌀 Módulo 4 – Navegación Simbiótica - Venn Interactivo */
 
+  /* 🧠 Módulo 4.2 – Posicionamiento y halo dinámico para Venn */
+
+.venn-item {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 📍 Posicionamiento visual como diagrama de Venn */
+  #circle-left {
+    top: 25%;
+    left: 20%;
+  }
+  #circle-right {
+    top: 25%;
+    right: 20%;
+  }
+  #circle-bottom {
+    bottom: 15%;
+    left: 35%;
+  }
+  
+  /* 🌟 Anillo giratorio externo */
+  .outer-ring {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    border: 4px dashed transparent;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .ring-left {
+    border-color: #6fe26f;
+    animation: haloSpinLeft 12s linear infinite;
+  }
+  
+  .ring-right {
+    border-color: #ff9c9c;
+    animation: haloSpinRight 12s linear infinite;
+  }
+  
+  @keyframes haloSpinLeft {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+  
+  @keyframes haloSpinRight {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
   .venn-wrapper {
     position: relative;
     width: 400px;
@@ -206,17 +266,16 @@ body::before {
   }
   
   /* Animaciones */
-  .spin-left {
-    animation: spinLeft 10s linear infinite;
-  }
   .spin-right {
     animation: spinRight 10s linear infinite;
+  }
+  .spin-left {
+    animation: spinLeft 10s linear infinite;
   }
   .heartbeat {
     animation: heartbeat 2s ease-in-out infinite;
   }
   
-  /* Keyframes */
   @keyframes spinRight {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -230,6 +289,7 @@ body::before {
     50% { transform: scale(1.1); }
   }
   
+  
   .label {
     position: absolute;
     bottom: -30px;
@@ -237,4 +297,65 @@ body::before {
     font-weight: bold;
     color: #333;
   }
+  
+  /* 🧠 Bloques de cada ítem del diagrama Venn */
+.venn-item {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    text-align: center;
+  }
+  
+  /* 🔤 Etiquetas debajo de cada círculo */
+  .venn-item .label {
+    position: relative;
+    bottom: -20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    z-index: 3;
+  }
+
+  .venn-item .label {
+    animation: fadeIn 1s ease-in;
+    opacity: 0.95;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 0.95; transform: translateY(0); }
+  }
+
+  .label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    z-index: 3;
+  }
+  
+  .label-top {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .label-bottom {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Botones interactivos */
+  .venn-circle {
+    cursor: pointer;
+  }
+  
   

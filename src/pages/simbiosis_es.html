@@ -1,67 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simbiosis</title>
-  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body>
 
-  <div class="venn-container">
-    <div class="venn-row">
-      <!-- Círculo Izquierdo – Cerebro -->
-      <div class="venn-item" id="cerebro">
-        <div class="outer-ring ring-left"></div>
-        <div class="venn-circle spin-right">🧠</div>
-        <span class="label-text" id="txt-cerebro">Cerebro</span>
-      </div>
-
-      <!-- Círculo Derecho – Cuerpo -->
-      <div class="venn-item" id="cuerpo">
-        <div class="outer-ring ring-right"></div>
-        <div class="venn-circle spin-left">💪</div>
-        <span class="label-text" id="txt-cuerpo">Cuerpo</span>
-      </div>
+  <!-- 🎯 Contenedor Venn Interactivo -->
+  <div class="venn-wrapper">
+    <!-- 🧠 Cerebro (gira a la derecha) -->
+    <div class="venn-item" id="circle-left">
+      <div class="label label-top">🧠 <span class="text">Cerebro</span></div>
+      <div class="venn-circle spin-right" role="button" aria-label="Cerebro"></div>
     </div>
-
-    <!-- Círculo Inferior – Comunidad -->
-    <div class="venn-item" id="comunidad">
-      <div class="outer-ring ring-left"></div>
-      <div class="venn-circle" style="animation: heartbeat 2s ease-in-out infinite;">🌍</div>
-      <span class="label-text" id="txt-comunidad">Comunidad</span>
+  
+    <!-- 💪 Cuerpo (gira a la izquierda) -->
+    <div class="venn-item" id="circle-right">
+      <div class="label label-top">💪 <span class="text">Cuerpo</span></div>
+      <div class="venn-circle spin-left" role="button" aria-label="Cuerpo"></div>
+    </div>
+  
+    <!-- 🌍 Comunidad (palpita) -->
+    <div class="venn-item" id="circle-bottom">
+      <div class="venn-circle heartbeat" role="button" aria-label="Comunidad"></div>
+      <div class="label label-bottom">🌍 <span class="text">Comunidad</span></div>
     </div>
   </div>
+  
+  
 
-  <script>
-    // Detectar idioma
-    const lang = localStorage.getItem("idioma") || "es";
-
-    // Diccionario multilenguaje
-    const textos = {
-      es: { cerebro: "Cerebro", cuerpo: "Cuerpo", comunidad: "Comunidad" },
-      en: { cerebro: "Mind", cuerpo: "Body", comunidad: "Community" }
-    };
-    const t = textos[lang];
-
-    // Insertar textos
-    document.getElementById("txt-cerebro").textContent = t.cerebro;
-    document.getElementById("txt-cuerpo").textContent = t.cuerpo;
-    document.getElementById("txt-comunidad").textContent = t.comunidad;
-
-    // Redirecciones simbióticas
-    document.getElementById("cerebro").addEventListener("click", () => {
-      window.location.href = `tiddly_cerebro_${lang}.html`;
-    });
-
-    document.getElementById("cuerpo").addEventListener("click", () => {
-      window.location.href = `tiddly_cuerpo_${lang}.html`;
-    });
-
-    document.getElementById("comunidad").addEventListener("click", () => {
-      window.location.href = `comunidad_${lang}.html`;
-    });
-  </script>
+  <!-- Lógica de idioma y redirección -->
+  <script src="../src/script.js"></script>
 
 </body>
 </html>
