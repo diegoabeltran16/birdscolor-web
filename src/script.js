@@ -1,86 +1,118 @@
-// Definimos la función de redirección de forma global
-window.redirectTo = function(url) {
-    console.log("Redirigiendo a:", url);
-    window.location.href = url;
-};
+"use strict";
 
+// =============================================
+// Lógica del DIAGRAMA VENN (Simbiosis)
+// =============================================
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM completamente cargado en script.js");
+  // Obtiene el idioma y estado de cookies
+  const lang = localStorage.getItem("idioma") || "es";
+  const consent = localStorage.getItem("cookiesConsent") || "none";
 
-    const pollito = document.getElementById("icono");
-    const spinner = document.getElementById("spinner");
-    if (!pollito || !spinner) {
-        console.error("Elemento 'icono' o 'spinner' no encontrado.");
-        return;
+  // Diccionario multilenguaje para el diagrama Venn
+  const textos = {
+    es: { cerebro: "Cerebro", cuerpo: "Cuerpo", comunidad: "Comunidad" },
+    en: { cerebro: "Mind", cuerpo: "Body", comunidad: "Community" },
+  };
+  const t = textos[lang];
+
+  // Asignar los textos a las etiquetas de cada círculo del diagrama
+  // Se asume que en el HTML de simbiosis se usan elementos con clase "venn-label"
+  const vennMap = {
+    "circle-left": t.cerebro,
+    "circle-right": t.cuerpo,
+    "circle-bottom": t.comunidad,
+  };
+  for (const [id, texto] of Object.entries(vennMap)) {
+    const label = document.querySelector(`#${id} .venn-label`);
+    if (label) label.textContent = texto;
+  }
+
+  // Asignar redirecciones a cada círculo del Venn
+  const redirectMap = {
+    "circle-left": `tiddly_cerebro_${lang}.html`,
+    "circle-right": `tiddly_cuerpo_${lang}.html`,
+    "circle-bottom": `comunidad_${lang}.html`,
+  };
+  for (const [id, url] of Object.entries(redirectMap)) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", () => {
+        if (consent !== "none") {
+          window.redirectTo(url);
+        } else {
+          alert("⚠️ Debes aceptar cookies para continuar.");
+        }
+      });
     }
+  }
 
-    const REDIRECT_DELAY = 1000; // Tiempo antes de mostrar el spinner (opcional)
+  // =============================================
+  // Lógica del POLLITO (index.html)
+  // NO TOCAR ESTA SECCIÓN
+  // =============================================
+  const pollito = document.getElementById("icono");
+  const spinner = document.getElementById("spinner");
+  const REDIRECT_DELAY = 1000;
 
-    // Función para enviar datos del clic (puedes mantener la lógica existente)
-    const sendClickEvent = async () => {
-        const eventData = {
-            event: "click_pollito",
-            timestamp: new Date().toISOString()
-        };
-        try {
-            await fetch("https://powerautomate-webhook.com", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(eventData)
-            });
-        } catch (error) {
-            console.error("Error al enviar el evento.", error);
-            // Aquí podrías guardar el evento localmente si lo deseas.
-        }
-        
-        if (typeof gtag === "function") {
-            gtag('event', 'click_pollito', {
-                'event_category': 'Interacción',
-                'event_label': 'Icono Pollito',
-                'value': 1
-            });
-        }
-    };
+  if (pollito && spinner) {
+    pollito.addEventListener("click", () => {
+      console.log("🐥 Clic en el pollito registrado");
 
-    // Función para manejar el clic en el pollito
-    const handlePollitoClick = () => {
-        console.log("🐥 Clic en el pollito registrado");
-        sendClickEvent();
+      // Evento a Power Automate + Analytics
+      const eventData = {
+        event: "click_pollito",
+        timestamp: new Date().toISOString(),
+      };
+      fetch("https://powerautomate-webhook.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventData),
+      }).catch((err) =>
+        console.error("❌ Error al enviar el evento:", err)
+      );
 
-        // Agregar la clase "bounce" para feedback visual
-        pollito.classList.add("bounce");
-
-        pollito.addEventListener("animationend", function restoreAnimation(e) {
-            if (e.animationName === "bounce") {
-                pollito.style.display = "none";
-                spinner.style.display = "block";
-                pollito.classList.remove("bounce");
-                pollito.removeEventListener("animationend", restoreAnimation);
-            }
+      if (typeof gtag === "function") {
+        gtag("event", "click_pollito", {
+          event_category: "Interacción",
+          event_label: "Icono Pollito",
+          value: 1,
         });
+      }
 
-        // En lugar de redirigir inmediatamente, mostramos el banner de cookies
-        // Se asume que cookies.js define la función global showCookieBanner()
-        setTimeout(() => {
-            if (typeof showCookieBanner === "function") {
-                showCookieBanner();
-            } else {
-                console.warn("No se encontró la función showCookieBanner(). Redirigiendo de forma predeterminada.");
-                const lang = localStorage.getItem("idioma") || "es";
-                window.redirectTo(`simbiosis_${lang}.html`);
-            }
-        }, REDIRECT_DELAY);
-    };
+      // Animación de feedback
+      pollito.classList.add("bounce");
+      pollito.addEventListener("animationend", function restoreAnimation(e) {
+        if (e.animationName === "bounce") {
+          pollito.style.display = "none";
+          spinner.style.display = "block";
+          pollito.classList.remove("bounce");
+          pollito.removeEventListener("animationend", restoreAnimation);
+        }
+      });
 
-    pollito.addEventListener("click", handlePollitoClick);
+      // Mostrar banner o redirigir
+      setTimeout(() => {
+        if (typeof showCookieBanner === "function") {
+          showCookieBanner();
+        } else {
+          window.redirectTo(`simbiosis_${lang}.html`);
+        }
+      }, REDIRECT_DELAY);
+    });
+  }
 });
 
-// Opcional: Agregar la animación bounce dinámicamente (si no está en CSS)
-const style = document.createElement("style");
-style.innerHTML = `
-    @keyframes bounce {
+// =============================================
+// Inyección de la animación "bounce" si no existe
+// =============================================
+if (!document.getElementById("bounce-style")) {
+  const style = document.createElement("style");
+  style.id = "bounce-style";
+  style.innerHTML = `
+      @keyframes bounce {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.2); }
-    }
-`;
-document.head.appendChild(style);
+      }
+  `;
+  document.head.appendChild(style);
+}

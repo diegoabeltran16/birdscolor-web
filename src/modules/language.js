@@ -1,16 +1,22 @@
-// language.js
-document.addEventListener("DOMContentLoaded", function() {
-    // Si no existe una preferencia de idioma, la detecta y la guarda
+// language.js – Módulo de detección automática de idioma del navegador
+document.addEventListener("DOMContentLoaded", function () {
+    // 🎯 Paso 1: Definir los idiomas soportados por el sistema
+    const idiomasSoportados = ["es", "en"];
+  
+    // 🌍 Paso 2: Detectar el idioma del navegador del usuario
+    const userLang = navigator.language || navigator.userLanguage;
+    const langDetectado = userLang.slice(0, 2);
+  
+    // ✅ Paso 3: Validar que el idioma esté soportado, sino usar "es" como fallback
+    const langFinal = idiomasSoportados.includes(langDetectado) ? langDetectado : "es";
+  
+    // 🧠 Paso 4: Guardar en localStorage si no se ha guardado antes
     if (!localStorage.getItem("idioma")) {
-        const userLang = navigator.language || navigator.userLanguage;
-        const langCode = userLang.startsWith("es") ? "es" : "en";
-        localStorage.setItem("idioma", langCode);
+      localStorage.setItem("idioma", langFinal);
+      console.log("[language] Idioma detectado y guardado:", langFinal);
     }
-});
-
-// Función para cambiar el idioma manualmente (usa el selector en index.html)
-function cambiarIdioma(lang) {
-    localStorage.setItem("idioma", lang);
-    // No redirigimos aquí; la redirección se hará al interactuar con el pollito
-    console.log("Idioma cambiado a:", lang);
-}
+  
+    // 🌐 Paso 5: Exponer el idioma actual como variable global (solo lectura)
+    window.idiomaActual = localStorage.getItem("idioma");
+  });
+  

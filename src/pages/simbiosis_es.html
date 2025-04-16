@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simbiosis - Español</title>
-  <link rel="stylesheet" href="../assets/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Simbiosis – Diagrama Venn</title>
+  <!-- Enlace a la hoja de estilos. NOTA: La ruta se ajusta según tu estructura -->
+  <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body>
-  <h1>Bienvenido a la Simbiosis en Español</h1>
-  <p>Aquí iría el contenido en español.</p>
+  <!-- Fondo animado ya viene definido en styles.css -->
+
+  <!-- ================================================== -->
+  <!-- DIAGRAMA VENN: Triángulo Invertido (2 arriba, 1 abajo) -->
+  <!-- ================================================== -->
+  <div class="venn-wrapper">
+    
+    <!-- Círculo superior izquierdo: Cerebro -->
+    <div class="venn-item" id="circle-left">
+      <div class="outer-ring ring-left"></div>
+      <div class="venn-circle spin-left">🧠</div>
+      <!-- Etiqueta encima (con flecha hacia abajo) -->
+      <div class="venn-label label-top">Cerebro</div>
+    </div>
+    
+    <!-- Círculo superior derecho: Cuerpo -->
+    <div class="venn-item" id="circle-right">
+      <div class="outer-ring ring-right"></div>
+      <div class="venn-circle spin-right">💪</div>
+      <div class="venn-label label-top">Cuerpo</div>
+    </div>
+    
+    <!-- Círculo inferior centrado: Comunidad -->
+    <div class="venn-item" id="circle-bottom">
+      <div class="outer-ring ring-left"></div>
+      <div class="venn-circle heartbeat">🌍</div>
+      <!-- Etiqueta debajo (con flecha hacia arriba) -->
+      <div class="venn-label label-bottom">Comunidad</div>
+    </div>
+    
+  </div>
+
+  <!-- ================================================== -->
+  <!-- SCRIPTS de la página (solo los relacionados al diagrama Venn) -->
+  <!-- ================================================== -->
+  <script src="../script.js"></script>
 </body>
 </html>

@@ -1,9 +1,13 @@
 // test_language.js
 
-const assert = require('assert');
-const sinon = require('sinon');
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+import { expect } from 'chai';
+import { JSDOM, ResourceLoader, VirtualConsole } from 'jsdom';
+import sinon from 'sinon';
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert';
+
+
 
 describe('Language Module Tests', function() {
   let dom, window, document;
