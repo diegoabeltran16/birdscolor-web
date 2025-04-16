@@ -1,361 +1,368 @@
 /* Configuración base del body */
 body {
-    margin: 0;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
 }
 
 /* Pseudo-elemento para el fondo animado con colores en versión pastel */
 body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Conic-gradient con los tonos pastel de la rueda de colores */
-    background: conic-gradient(
-        #FFADAD, /* Pastel rojo */
-        #FFD6A5, /* Pastel naranja */
-        #FDFFB6, /* Pastel amarillo */
-        #CAFFBF, /* Pastel verde */
-        #9BF6FF, /* Pastel azul */
-        #A0C4FF, /* Pastel índigo */
-        #BDB2FF, /* Pastel violeta */
-        #FFADAD  /* Regresa al pastel rojo para continuidad */
-    );
-    z-index: -1; /* Fondo detrás del contenido */
-    animation: hueRotate 20s linear infinite;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Conic-gradient con los tonos pastel de la rueda de colores */
+  background: conic-gradient(
+      #FFADAD, /* Pastel rojo */
+      #FFD6A5, /* Pastel naranja */
+      #FDFFB6, /* Pastel amarillo */
+      #CAFFBF, /* Pastel verde */
+      #9BF6FF, /* Pastel azul */
+      #A0C4FF, /* Pastel índigo */
+      #BDB2FF, /* Pastel violeta */
+      #FFADAD  /* Regresa al pastel rojo para continuidad */
+  );
+  z-index: -1; /* Fondo detrás del contenido */
+  animation: hueRotate 20s linear infinite;
 }
 
 /* Animación que rota el tono de los colores sin mover el contenedor */
 @keyframes hueRotate {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* Contenedor del pollito */
 .container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
 }
 
 /* Imagen del pollito con efecto de latido a 60 BPM */
 .icono {
-    width: 150px;
-    height: auto;
-    animation: heartbeat 1s infinite;
-    cursor: pointer;
+  width: 150px;
+  height: auto;
+  animation: heartbeat 1s infinite;
+  cursor: pointer;
 }
 
 @keyframes heartbeat {
-    0%   { transform: scale(1); }
-    10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
-    20%  { transform: scale(1); }     /* Regreso a la normalidad */
-    40%  { transform: scale(1.15); }    /* Expansión máxima (diástole) */
-    60%  { transform: scale(1.05); }    /* Inicio del retorno */
-    100% { transform: scale(1); }
+  
+  0%   { transform: scale(1); }
+  10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
+  20%  { transform: scale(1); }     /* Regreso a la normalidad */
+  40%  { transform: scale(1.15); }    /* Expansión máxima (diástole) */
+  60%  { transform: scale(1.05); }    /* Inicio del retorno */
+  100% { transform: scale(1); }
 }
+
 
 /* Animación bounce: efecto puntual para feedback al clic */
 @keyframes bounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 .bounce {
-    animation: bounce 0.5s;
+  animation: bounce 0.5s;
 }
 
 /* Contenedor centrado para evitar conflictos de transform */
 .spinner-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 /* Spinner giratorio sin modificar el posicionamiento */
 .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    to { rotate: -360deg; } /* ✅ usar rotate solo (moderno) */
+  to { rotate: -360deg; } /* ✅ usar rotate solo (moderno) */
 }
 
 /* 📱 Responsive: tablets y móviles */
 @media (max-width: 900px) {
-    .icono {
-        width: 120px;
-    }
-    .spinner {
-        width: 40px;
-        height: 40px;
-    }
+  .icono {
+      width: 120px;
+  }
+  .spinner {
+      width: 40px;
+      height: 40px;
+  }
 }
 
 @media (max-width: 600px) {
-    .icono {
-        width: 90px;
-    }
-    .spinner {
-        width: 30px;
-        height: 30px;
-    }
-    .container {
-        flex-direction: column;
-        padding: 20px;
-        touch-action: none;
-    }
+  .icono {
+      width: 90px;
+  }
+  .spinner {
+      width: 30px;
+      height: 30px;
+  }
+  .container {
+      flex-direction: column;
+      padding: 20px;
+      touch-action: none;
+  }
 }
 
 /* 📱 Boton de cookies */
 .cookie-button {
-    background-color: rgba(255, 255, 255, 0.6);
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    margin: 5px;
-    font-size: 1rem;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-  }
-  
-  .cookie-button:hover {
-    background-color: #CAFFBF; /* verde pastel suave */
-    border-color: #A0C4FF;
-  }
-  
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  margin: 5px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.cookie-button:hover {
+  background-color: #CAFFBF; /* verde pastel suave */
+  border-color: #A0C4FF;
+}
+
 /* 📱 Responsive: tablets y móviles el boton de cookies */
 
-  @media (max-width: 600px) {
-    #cookie-banner {
-      font-size: 0.95rem;
-      padding: 15px;
-    }
-  
-    #cookie-banner p {
-      margin-bottom: 12px;
-    }
-  
-    #cookie-banner .cookie-button {
-      display: block;
-      width: 100%;
-      margin: 6px 0;
-      font-size: 1rem;
-    }
+@media (max-width: 600px) {
+  #cookie-banner {
+    font-size: 0.95rem;
+    padding: 15px;
   }
-  
-  /* 🌀 Módulo 4 – Navegación Simbiótica - Venn Interactivo */
 
-  /* 🧠 Módulo 4.2 – Posicionamiento y halo dinámico para Venn */
+  #cookie-banner p {
+    margin-bottom: 12px;
+  }
 
-.venn-item {
-    position: absolute;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  #cookie-banner .cookie-button {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    font-size: 1rem;
   }
-  
-  /* 📍 Posicionamiento visual como diagrama de Venn */
-  #circle-left {
-    top: 25%;
-    left: 20%;
-  }
-  #circle-right {
-    top: 25%;
-    right: 20%;
-  }
-  #circle-bottom {
-    bottom: 15%;
-    left: 35%;
-  }
-  
-  /* 🌟 Anillo giratorio externo */
-  .outer-ring {
-    position: absolute;
-    top: -15px;
-    left: -15px;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    border: 4px dashed transparent;
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  .ring-left {
-    border-color: #6fe26f;
-    animation: haloSpinLeft 12s linear infinite;
-  }
-  
-  .ring-right {
-    border-color: #ff9c9c;
-    animation: haloSpinRight 12s linear infinite;
-  }
-  
-  @keyframes haloSpinLeft {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
-  }
-  
-  @keyframes haloSpinRight {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
+}
 
+/* ===================================================== */
+/* ESTILOS DEL DIAGRAMA VENN (SOLO PARA la página simbiosis) */
+/* ===================================================== */
+
+/* Contenedor principal del diagrama Venn (ya existente) */
+.venn-wrapper {
+  position: relative;
+  width: 400px; /* Ajusta al tamaño que desees */
+  height: 400px;
+  margin: auto;
+  z-index: 3;
+}
+
+/* Se encapsulan los ítems del Venn dentro de .venn-wrapper */
+.venn-wrapper .venn-item {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Posicionamiento tipo Venn (versión en píxeles) */
+/* Estos selectores se aplican solo a los elementos dentro de .venn-wrapper */
+/* Círculo superior izquierdo */
+.venn-wrapper #circle-left {
+  top: 60px;    /* Ajusta la posición vertical */
+  left: 50px;   /* Ajusta la posición horizontal */
+}
+
+/* Círculo superior derecho */
+.venn-wrapper #circle-right {
+  top: 60px;    
+  left: 210px;  /* Cambia “right:” por “left:” y ajusta para separarlos */
+}
+
+/* Círculo inferior centrado */
+.venn-wrapper #circle-bottom {
+  top: 200px;   /* Más abajo para evitar colisión con los de arriba */
+  left: 130px;  /* Centrado horizontal entre circle-left y circle-right */
+}
+
+/* Círculo interior (área clickeable) */
+.venn-wrapper .venn-circle {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+/* Anillo giratorio externo */
+.venn-wrapper .outer-ring {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px dashed transparent;
+  z-index: 0;
+  pointer-events: none;
+}
+.venn-wrapper .ring-left {
+  border-color: #6fe26f;
+  animation: haloSpinLeft 12s linear infinite;
+}
+.venn-wrapper .ring-right {
+  border-color: #ff9c9c;
+  animation: haloSpinRight 12s linear infinite;
+}
+
+@keyframes haloSpinLeft {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes haloSpinRight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animaciones en el contenido (giro/latido) */
+.venn-wrapper .spin-left {
+  animation: spinLeft 10s linear infinite;
+}
+.venn-wrapper .spin-right {
+  animation: spinRight 10s linear infinite;
+}
+.venn-wrapper .heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes spinLeft {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes spinRight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Etiquetas (títulos) con efecto de "nube" para los círculos superiores y normal para el inferior */
+
+/* Estilo base para todas las etiquetas del diagrama */
+.venn-wrapper .venn-label {
+  position: absolute;
+  font-size: 1.2rem;      /* Ajusta el tamaño si lo deseas */
+  font-style: normal;     /* Texto normal, sin cursiva */
+  opacity: 0.7;           /* Suaviza el texto */
+  padding: 6px 10px;
+  color: #333;
+  z-index: 2;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Para los círculos superiores: etiqueta estilo "nube" */
+.venn-wrapper .label-top {
+  position: absolute;
+  top: -35px;             /* Ajusta la separación vertical */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Efecto "nube" para la etiqueta superior */
+.venn-wrapper .label-top.cloud-bubble {
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 20px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Flecha para la etiqueta superior estilo "nube" */
+.venn-wrapper .label-top.cloud-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;             /* La flecha sale por debajo de la etiqueta */
+  left: 25px;            /* Ajusta este valor para mover la flecha horizontalmente */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #fff;
+}
+
+/* Para la etiqueta inferior: texto normal sin "nube" ni flecha */
+.venn-wrapper .label-bottom {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+.venn-wrapper .label-bottom::after {
+  content: none;
+}
+
+
+/* Responsividad para el diagrama Venn */
+@media (max-width: 600px) {
   .venn-wrapper {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    margin: auto;
+      width: 90%;
+      height: 70vh;
+      max-width: 350px;
   }
-  
-  .venn-circle {
-    position: absolute;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+  .venn-wrapper #circle-left {
+      top: 20%;
+      left: 10%;
   }
-  
-  /* Posiciones relativas tipo Venn */
-  #circle-left {
-    top: 100px;
-    left: 40px;
-    transform-origin: top right;
+  .venn-wrapper #circle-right {
+      top: 20%;
+      right: 10%;
   }
-  
-  #circle-right {
-    top: 100px;
-    right: 40px;
-    transform-origin: top left;
+  .venn-wrapper #circle-bottom {
+      bottom: 10%;
+      left: calc(50% - 70px);
   }
-  
-  #circle-bottom {
-    top: 180px;
-    left: 130px;
-    transform-origin: center;
-  }
-  
-  /* Animaciones */
-  .spin-right {
-    animation: spinRight 10s linear infinite;
-  }
-  .spin-left {
-    animation: spinLeft 10s linear infinite;
-  }
-  .heartbeat {
-    animation: heartbeat 2s ease-in-out infinite;
-  }
-  
-  @keyframes spinRight {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  @keyframes spinLeft {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
-  }
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-  
-  
-  .label {
-    position: absolute;
-    bottom: -30px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* 🧠 Bloques de cada ítem del diagrama Venn */
-.venn-item {
-    position: absolute;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    pointer-events: auto;
-    text-align: center;
-  }
-  
-  /* 🔤 Etiquetas debajo de cada círculo */
-  .venn-item .label {
-    position: relative;
-    bottom: -20px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    z-index: 3;
-  }
-
-  .venn-item .label {
-    animation: fadeIn 1s ease-in;
-    opacity: 0.95;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 0.95; transform: translateY(0); }
-  }
-
-  .label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    z-index: 3;
-  }
-  
-  .label-top {
-    position: absolute;
-    top: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .label-bottom {
-    position: absolute;
-    bottom: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  /* Botones interactivos */
-  .venn-circle {
-    cursor: pointer;
-  }
-  
-  
+}
