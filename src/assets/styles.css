@@ -100,6 +100,11 @@ body::before {
   to { rotate: -360deg; } /* ✅ usar rotate solo (moderno) */
 }
 
+.container {
+  position: relative;
+}
+
+
 /* 📱 Responsive: tablets y móviles */
 @media (max-width: 900px) {
   .icono {
@@ -143,6 +148,27 @@ body::before {
   background-color: #CAFFBF; /* verde pastel suave */
   border-color: #A0C4FF;
 }
+
+#cookie-banner {
+  font-family: "Segoe UI", sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 2px solid #FFD6A5;
+  padding: 20px;
+  text-align: center;
+  z-index: 1000;
+  display: none; /* oculto por defecto */
+  backdrop-filter: blur(8px);
+  border-radius: 12px 12px 0 0;
+  color: #333;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+}
+
 
 /* 📱 Responsive: tablets y móviles el boton de cookies */
 
@@ -365,4 +391,8 @@ body::before {
       bottom: 10%;
       left: calc(50% - 70px);
   }
+}
+
+#icono.disabled {
+    cursor: not-allowed;
 }
