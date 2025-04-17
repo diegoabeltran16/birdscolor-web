@@ -1,118 +1,87 @@
-"use strict";
+// script.js — Ciclo 1, Módulo UX Simbiótica
+// 🧠 Funciones principales:
+// 1. Mostrar el pollito palpitando desde el inicio.
+// 2. Bloquear interacción hasta que el usuario decida sobre las cookies.
+// 3. Detectar idioma del usuario.
+// 4. Registrar el clic en el pollito (Power Automate + Analytics).
+// 5. Mostrar spinner emocional.
+// 6. Redirigir según idioma y consentimiento.
+// 7. Garantizar modularidad, ética y accesibilidad.
 
-// =============================================
-// Lógica del DIAGRAMA VENN (Simbiosis)
-// =============================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Obtiene el idioma y estado de cookies
+  const icono = document.getElementById("icono");
+  const spinnerWrapper = document.getElementById("spinner");
   const lang = localStorage.getItem("idioma") || "es";
-  const consent = localStorage.getItem("cookiesConsent") || "none";
 
-  // Diccionario multilenguaje para el diagrama Venn
-  const textos = {
-    es: { cerebro: "Cerebro", cuerpo: "Cuerpo", comunidad: "Comunidad" },
-    en: { cerebro: "Mind", cuerpo: "Body", comunidad: "Community" },
-  };
-  const t = textos[lang];
+  // ✅ 1. Activar latido simbiótico desde el inicio
+  icono.classList.add("heartbeat");
 
-  // Asignar los textos a las etiquetas de cada círculo del diagrama
-  // Se asume que en el HTML de simbiosis se usan elementos con clase "venn-label"
-  const vennMap = {
-    "circle-left": t.cerebro,
-    "circle-right": t.cuerpo,
-    "circle-bottom": t.comunidad,
-  };
-  for (const [id, texto] of Object.entries(vennMap)) {
-    const label = document.querySelector(`#${id} .venn-label`);
-    if (label) label.textContent = texto;
+  // 🛡️ 2. Bloquear el clic hasta que el usuario decida cookies
+  window.isPollitoEnabled = false; // se habilita luego desde cookies.js
+  icono.classList.add("disabled"); // opcional: estilo visual deshabilitado
+
+  // 🧪 3. Verifica si ya hay consentimiento guardado
+  const consent = localStorage.getItem("cookiesConsent");
+  if (!consent && typeof showCookieBanner === "function") {
+    setTimeout(() => {
+      showCookieBanner(); // banner se muestra automáticamente
+    }, 200);
   }
 
-  // Asignar redirecciones a cada círculo del Venn
-  const redirectMap = {
-    "circle-left": `tiddly_cerebro_${lang}.html`,
-    "circle-right": `tiddly_cuerpo_${lang}.html`,
-    "circle-bottom": `comunidad_${lang}.html`,
+  // 🎬 4. Función para mostrar el spinner centrado
+  const showSpinner = () => {
+    if (spinnerWrapper) {
+      spinnerWrapper.style.display = "flex";
+    }
   };
-  for (const [id, url] of Object.entries(redirectMap)) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener("click", () => {
-        if (consent !== "none") {
-          window.redirectTo(url);
-        } else {
-          alert("⚠️ Debes aceptar cookies para continuar.");
-        }
+
+  // 🚀 5. Función desacoplada para redirección amigable
+  window.redirectTo = function (url) {
+    setTimeout(() => {
+      window.location.href = url;
+    }, 800); // breve delay para que el spinner respire
+  };
+
+  // 🐤 6. Evento de clic en el pollito
+  icono.addEventListener("click", () => {
+    // ⛔ Bloquea si el usuario no ha aceptado cookies aún
+    if (!window.isPollitoEnabled) {
+      console.log("🔒 Aún no se ha aceptado/rechazado cookies.");
+      return;
+    }
+
+    // 💫 Animación de rebote emocional
+    icono.classList.add("bounce");
+
+    // 📤 Registro simbiótico (para Power Automate u otro backend)
+    const evento = {
+      evento: "click_pollito",
+      timestamp: new Date().toISOString(),
+      idioma: lang,
+    };
+    console.log("[📤 Evento enviado]", evento);
+
+    // 📊 Registro opcional en Google Analytics
+    if (typeof gtag === "function") {
+      gtag("event", "click_pollito", {
+        event_category: "UX",
+        event_label: lang,
+        value: 1,
       });
     }
-  }
 
-  // =============================================
-  // Lógica del POLLITO (index.html)
-  // NO TOCAR ESTA SECCIÓN
-  // =============================================
-  const pollito = document.getElementById("icono");
-  const spinner = document.getElementById("spinner");
-  const REDIRECT_DELAY = 1000;
+    // 👋 Oculta el pollito, muestra transición visual
+    icono.style.display = "none";
+    showSpinner();
 
-  if (pollito && spinner) {
-    pollito.addEventListener("click", () => {
-      console.log("🐥 Clic en el pollito registrado");
-
-      // Evento a Power Automate + Analytics
-      const eventData = {
-        event: "click_pollito",
-        timestamp: new Date().toISOString(),
-      };
-      fetch("https://powerautomate-webhook.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(eventData),
-      }).catch((err) =>
-        console.error("❌ Error al enviar el evento:", err)
-      );
-
-      if (typeof gtag === "function") {
-        gtag("event", "click_pollito", {
-          event_category: "Interacción",
-          event_label: "Icono Pollito",
-          value: 1,
-        });
+    // 📦 Evaluación post-consentimiento: redirección
+    setTimeout(() => {
+      const cookiesConsent = localStorage.getItem("cookiesConsent");
+      if (!cookiesConsent && typeof showCookieBanner === "function") {
+        showCookieBanner(); // En caso de que aún no se haya mostrado
+      } else {
+        window.redirectTo(`simbiosis_${lang}.html`);
       }
-
-      // Animación de feedback
-      pollito.classList.add("bounce");
-      pollito.addEventListener("animationend", function restoreAnimation(e) {
-        if (e.animationName === "bounce") {
-          pollito.style.display = "none";
-          spinner.style.display = "block";
-          pollito.classList.remove("bounce");
-          pollito.removeEventListener("animationend", restoreAnimation);
-        }
-      });
-
-      // Mostrar banner o redirigir
-      setTimeout(() => {
-        if (typeof showCookieBanner === "function") {
-          showCookieBanner();
-        } else {
-          window.redirectTo(`simbiosis_${lang}.html`);
-        }
-      }, REDIRECT_DELAY);
-    });
-  }
+    }, 300);
+  });
 });
-
-// =============================================
-// Inyección de la animación "bounce" si no existe
-// =============================================
-if (!document.getElementById("bounce-style")) {
-  const style = document.createElement("style");
-  style.id = "bounce-style";
-  style.innerHTML = `
-      @keyframes bounce {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-      }
-  `;
-  document.head.appendChild(style);
-}
