@@ -1,87 +1,79 @@
-// script.js — Ciclo 1, Módulo UX Simbiótica
-// 🧠 Funciones principales:
-// 1. Mostrar el pollito palpitando desde el inicio.
-// 2. Bloquear interacción hasta que el usuario decida sobre las cookies.
-// 3. Detectar idioma del usuario.
-// 4. Registrar el clic en el pollito (Power Automate + Analytics).
-// 5. Mostrar spinner emocional.
-// 6. Redirigir según idioma y consentimiento.
-// 7. Garantizar modularidad, ética y accesibilidad.
+// sync-to-tiddlers.cjs
+// 🧠 Refactoración del módulo para exportar cada archivo como un tiddler independiente
+// Objetivo: generar 1 archivo .json por cada archivo fuente del proyecto para importar en TiddlyWiki
 
-document.addEventListener("DOMContentLoaded", () => {
-  const icono = document.getElementById("icono");
-  const spinnerWrapper = document.getElementById("spinner");
-  const lang = localStorage.getItem("idioma") || "es";
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const crypto = require('crypto');
+const { execSync } = require('child_process');
 
-  // ✅ 1. Activar latido simbiótico desde el inicio
-  icono.classList.add("heartbeat");
+// 📁 Configuraciones base
+const IGNORE_DIRS = ['node_modules', '.git', 'dist', 'coverage', 'tiddlers-export'];
+const VALID_EXTENSIONS = ['.js', '.html', '.css', '.json', '.sh', '.md'];
+const PROJECT_ROOT = process.cwd();
+const OUTPUT_DIR = path.join(PROJECT_ROOT, 'tiddlers-export');
 
-  // 🛡️ 2. Bloquear el clic hasta que el usuario decida cookies
-  window.isPollitoEnabled = false; // se habilita luego desde cookies.js
-  icono.classList.add("disabled"); // opcional: estilo visual deshabilitado
+if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR);
 
-  // 🧪 3. Verifica si ya hay consentimiento guardado
-  const consent = localStorage.getItem("cookiesConsent");
-  if (!consent && typeof showCookieBanner === "function") {
-    setTimeout(() => {
-      showCookieBanner(); // banner se muestra automáticamente
-    }, 200);
+// 🏷️ Tags base
+const BASE_TAGS = [
+  '[[--- Codigo]]',
+  '[[--- Ciclos de desarrollo]]',
+  '[[--- Detalles del proyecto]]',
+  '[[--- Principios de programación]]',
+  'auto-generated'
+];
+
+// 🔍 Utilidad para recorrer carpetas y recolectar archivos
+function collectFiles(dir) {
+  const files = [];
+  for (const item of fs.readdirSync(dir)) {
+    const fullPath = path.join(dir, item);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      if (!IGNORE_DIRS.includes(item)) files.push(...collectFiles(fullPath));
+    } else if (VALID_EXTENSIONS.includes(path.extname(item))) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+// 🧠 Crea el contenido del tiddler a partir de un archivo real
+function createTiddlerContent(filePath) {
+  const relPath = path.relative(PROJECT_ROOT, filePath).replace(/\\/g, '/');
+  const content = fs.readFileSync(filePath, 'utf8');
+  const ext = path.extname(filePath).slice(1);
+  const title = `sync-${relPath}`;
+  const hash = crypto.createHash('md5').update(content).digest('hex').slice(0, 12);
+
+  return {
+    title,
+    text: `\u0060\u0060\u0060${ext}\n${content}\n\u0060\u0060\u0060`,
+    type: `text/vnd.tiddlywiki`,
+    tags: BASE_TAGS,
+    created: new Date().toISOString(),
+    modified: new Date().toISOString(),
+    'tmap.id': hash
+  };
+}
+
+// 🚀 Recorre archivos y genera un tiddler por cada uno
+function generateTiddlers() {
+  const allFiles = collectFiles(PROJECT_ROOT);
+  const outputCount = [];
+
+  for (const file of allFiles) {
+    const tiddler = createTiddlerContent(file);
+    const outPath = path.join(OUTPUT_DIR, `${tiddler.title}.json`);
+    fs.writeFileSync(outPath, JSON.stringify(tiddler, null, 2));
+    outputCount.push(tiddler.title);
   }
 
-  // 🎬 4. Función para mostrar el spinner centrado
-  const showSpinner = () => {
-    if (spinnerWrapper) {
-      spinnerWrapper.style.display = "flex";
-    }
-  };
+  console.log(`\n✅ ${outputCount.length} tiddlers exportados a: ${OUTPUT_DIR}`);
+  console.log(`📦 Archivos:`, outputCount);
+}
 
-  // 🚀 5. Función desacoplada para redirección amigable
-  window.redirectTo = function (url) {
-    setTimeout(() => {
-      window.location.href = url;
-    }, 800); // breve delay para que el spinner respire
-  };
-
-  // 🐤 6. Evento de clic en el pollito
-  icono.addEventListener("click", () => {
-    // ⛔ Bloquea si el usuario no ha aceptado cookies aún
-    if (!window.isPollitoEnabled) {
-      console.log("🔒 Aún no se ha aceptado/rechazado cookies.");
-      return;
-    }
-
-    // 💫 Animación de rebote emocional
-    icono.classList.add("bounce");
-
-    // 📤 Registro simbiótico (para Power Automate u otro backend)
-    const evento = {
-      evento: "click_pollito",
-      timestamp: new Date().toISOString(),
-      idioma: lang,
-    };
-    console.log("[📤 Evento enviado]", evento);
-
-    // 📊 Registro opcional en Google Analytics
-    if (typeof gtag === "function") {
-      gtag("event", "click_pollito", {
-        event_category: "UX",
-        event_label: lang,
-        value: 1,
-      });
-    }
-
-    // 👋 Oculta el pollito, muestra transición visual
-    icono.style.display = "none";
-    showSpinner();
-
-    // 📦 Evaluación post-consentimiento: redirección
-    setTimeout(() => {
-      const cookiesConsent = localStorage.getItem("cookiesConsent");
-      if (!cookiesConsent && typeof showCookieBanner === "function") {
-        showCookieBanner(); // En caso de que aún no se haya mostrado
-      } else {
-        window.redirectTo(`simbiosis_${lang}.html`);
-      }
-    }, 300);
-  });
-});
+// 🏁 Ejecutar
+generateTiddlers();
