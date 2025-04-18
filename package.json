@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "test": "mocha --timeout 5000 \"test/**/*.js\"",
+    "sync-docs": "node scripts/sync-to-tiddlers.js",
     "start": "echo 'BirdsColor 🌈'",
     "check-outdated": "npm outdated",
     "check-security": "npm audit",
