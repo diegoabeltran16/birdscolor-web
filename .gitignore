@@ -1,8 +1,8 @@
-# Detalles del proyecto
-project-details/
-
 # Node modules
 node_modules/
+
+# Tiddlers-export
+scripts/tiddlers-export/
 
 # Logs
 *.log
@@ -21,3 +21,4 @@ coverage/
 .idea/
 .DS_Store
 Thumbs.db
+
