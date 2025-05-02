@@ -12,11 +12,17 @@ const __dirname = dirname(__filename);
 
 describe('Interacción con el ícono del pollito', function () {
   let window, document, pollito, spinner, clock;
+
   const REDIRECT_DELAY = 1000;
   const EXPECTED_REDIRECT = "simbiosis_es.html";
 
   beforeEach(() => {
-    clock = sinon.useFakeTimers();
+    // ⚠️ Usamos timers legacy para evitar conflicto con requestAnimationFrame
+    clock = sinon.useFakeTimers({
+      legacyFakeTimers: true,
+      toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval", "Date"]
+    });
+   
 
     const htmlPath = path.join(__dirname, 'index.test.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
@@ -30,12 +36,10 @@ describe('Interacción con el ícono del pollito', function () {
     window = dom.window;
     document = window.document;
 
-    // 💡 Definimos redirectTo directamente en el entorno simulado
     window.redirectTo = (url) => {
       window.__redirectedUrl = url;
     };
 
-    // ⬇️ Inyectamos el comportamiento del pollito
     const script = document.createElement("script");
     script.textContent = `
       document.getElementById("icono").addEventListener("click", function() {
@@ -47,14 +51,14 @@ describe('Interacción con el ícono del pollito', function () {
     `;
     document.body.appendChild(script);
 
-    // 🔧 Inicializamos los elementos del DOM
     pollito = document.getElementById("icono");
     spinner = document.getElementById("spinner");
     window.__redirectedUrl = "";
   });
 
   afterEach(() => {
-    clock.restore();
+    // ⚠️ Solo restauramos si fue definido correctamente
+    if (clock) clock.restore();
   });
 
   it('Debe redirigir después del tiempo definido (diagnóstico con fake timers)', () => {

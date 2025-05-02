@@ -1,0 +1,18 @@
+{
+  ".gitignore": "e8cb92183d0be94ede4519e95563ad4c9dceb90a",
+  "dependencias.md": "259fd23d85ff2d5329df2ff25c52e8a231b046cf",
+  "estructura.txt": "6c6b4e31a069a6cdb9f7938005804eaeb63d286d",
+  "package-lock.json": "8a86217c71e7e5ddd318c9d63ee429b86ef739ec",
+  "package.json": "a2eb5350f1c392f1342d7f54ac9855c3f5030152",
+  "README.md": "80039e94ce35c09ba308631fdfc81e889cb05746",
+  ".github\\workflows\\deploy.yml": "caed4c81585e395db755cc0437dc5653359214d2",
+  "scripts\\.hashes.json": "0d23689a2b779d6ed8fdb24efc0a75aedbf04e31",
+  "scripts\\generate_structure.py": "d0bd5402c248294ea8b9c47a5236af11f10f32e2",
+  "scripts\\tag_mapper.py": "d3d9b24ba4c3d97ab4f323fc57e5636d087663bd",
+  "scripts\\tiddler_exporter.py": "f70ebd3daf5b10e1f9b4c4d1570a7e9fde64bf61",
+  "src\\assets\\styles.css": "d94ef46e58de59140f2cb8f86884b229702c2ec8",
+  "src\\pages\\index.html": "fc0e4c2baff0de00060bc0405d5ebb41617a95cf",
+  "src\\pages\\simbiosis_en.html": "95dadf8134fdf81a3e37eb377c63210e12c7f2d7",
+  "src\\pages\\simbiosis_es.html": "6875a28c54454d280de3e9cfc7fe4dd536482348",
+  "test\\index.test.html": "84c6119791222ebd678151161f5f7122a1760cbc"
+}

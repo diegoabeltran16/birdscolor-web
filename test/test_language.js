@@ -44,42 +44,37 @@ describe('Language Module Tests', function() {
     dom.window.close();
   });
 
-  it('should set localStorage "idioma" based on navigator.language if not present', function(done) {
-    // Forzamos el valor de navigator.language
-    Object.defineProperty(window.navigator, 'language', {
-      value: "es-ES",
+  it('should set localStorage "idioma" based on navigator.language if not present', function() {
+    // ✅ Forzamos el idioma usando Proxy (sin redefinir .language directamente)
+    const fakeNavigator = new Proxy(window.navigator, {
+      get(target, prop) {
+        if (prop === 'language') return 'es-ES';
+        return target[prop];
+      }
+    });
+    // Inyectamos el proxy
+    Object.defineProperty(window, 'navigator', {
+      value: fakeNavigator,
       configurable: true
     });
-    
-    // Simulamos la carga de language.js inyectando su código en el DOM.
+  
+    // Simulamos el script del módulo language.js
     const languageScript = `
-      document.addEventListener("DOMContentLoaded", function() {
-          if (!localStorage.getItem("idioma")) {
-              const userLang = navigator.language || navigator.userLanguage;
-              const langCode = userLang.startsWith("es") ? "es" : "en";
-              localStorage.setItem("idioma", langCode);
-          }
-      });
-      function cambiarIdioma(lang) {
-          localStorage.setItem("idioma", lang);
-          window.redirectTo("simbiosis_" + lang + ".html");
+      if (!localStorage.getItem("idioma")) {
+          const userLang = navigator.language || navigator.userLanguage;
+          const langCode = userLang.startsWith("es") ? "es" : "en";
+          localStorage.setItem("idioma", langCode);
       }
     `;
     const scriptEl = document.createElement("script");
     scriptEl.textContent = languageScript;
     document.body.appendChild(scriptEl);
-
-    // Disparamos el evento DOMContentLoaded
-    document.dispatchEvent(new window.Event("DOMContentLoaded"));
-    
-    // Damos un pequeño retardo para que se ejecute el listener.
-    setTimeout(function() {
-      const idioma = window.localStorage.getItem("idioma");
-      assert.strictEqual(idioma, "es");
-      done();
-    }, 0);
+  
+    // ✅ Ejecutamos el código de inmediato (no necesita setTimeout ni done)
+    const idioma = window.localStorage.getItem("idioma");
+    expect(idioma).to.equal("es");
   });
-
+  
   it('cambiarIdioma should update localStorage and call global redirectTo', function() {
     // Stub de window.redirectTo para evitar navegación real y capturar la URL.
     const redirectStub = sinon.stub();
