@@ -47,3 +47,6 @@ htmlcov/
 .DS_Store      # For teachers with Macs
 Thumbs.db      # For teachers with Windows
 
+
+# Exported files
+rep-export-Windows/
