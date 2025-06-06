@@ -1,80 +1,58 @@
-name: Create High/Critical Dependabot Issues
+- name: Create issues for high/critical alerts only
+  uses: actions/github-script@v7
+  with:
+    script: |
+      // Parseamos la salida JSON del paso anterior
+      const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 3 * * *'  # Se ejecuta todos los días a las 03:00 UTC
+      for (const alert of alerts) {
+        const severity = alert.security_advisory.severity.toLowerCase();
+        if (!['high', 'critical'].includes(severity)) continue;
 
-jobs:
-  create-issues:
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: read
-      issues: write
+        const pkg = alert.dependency.package;
+        const summary = alert.security_advisory.summary;
+        const description = alert.security_advisory.description;
 
-    steps:
-      - name: Fetch open Dependabot alerts
-        id: fetch_alerts
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const response = await github.rest.dependabot.listAlertsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "open",
-              per_page: 100
-            });
-            return response.data;
+        // Construimos el título del issue (versión sin backticks)
+        const title = "🚨 [" + severity.toUpperCase() + "] "
+          + summary + " in " + pkg.ecosystem + ":" + pkg.name;
 
-      - name: Create issues for high/critical alerts only
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+        // Construimos el cuerpo del issue sin backticks
+        const body = [
+          "### ⚠️ Vulnerabilidad detectada (Severidad: " + severity.toUpperCase() + ")",
+          "",
+          "**Paquete afectado:** `" + pkg.name + "`  ",
+          "**Ecosistema:** " + pkg.ecosystem + "  ",
+          "**Vulnerabilidad:** " + summary + "  ",
+          "",
+          "**Descripción completa:**  ",
+          description,
+          "",
+          "**Dependabot URL:** [Ver alerta en GitHub](" + alert.html_url + ")",
+          "",
+          "---",
+          "",
+          "Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica."
+        ].join("\n");
 
-            for (const alert of alerts) {
-              const severity = alert.security_advisory.severity.toLowerCase();
-              if (!['high', 'critical'].includes(severity)) continue;
+        // Verificar si ya existe un issue abierto con este título
+        const { data: existingIssues } = await github.rest.issues.listForRepo({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          state: "open",
+          labels: "dependabot,security"
+        });
 
-              const pkg = alert.dependency.package;
-              const summary = alert.security_advisory.summary;
-              const description = alert.security_advisory.description;
-              const title = `🚨 [${severity.toUpperCase()}] ${summary} in ${pkg.ecosystem}:${pkg.name}`;
-              const body = `
-### ⚠️ Vulnerabilidad detectada (Severidad: ${severity.toUpperCase()})
-
-**Paquete afectado:** \`${pkg.name}\`  
-**Ecosistema:** ${pkg.ecosystem}  
-**Vulnerabilidad:** ${summary}  
-
-**Descripción completa:**  
-${description}
-
-**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})
-
----
-
-Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.
-`.trim();
-
-              // Verificar si ya existe un issue abierto con este título
-              const { data: existingIssues } = await github.rest.issues.listForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: "open",
-                labels: "dependabot,security"
-              });
-
-              const alreadyExists = existingIssues.find(i => i.title === title);
-              if (!alreadyExists) {
-                await github.rest.issues.create({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  title: title,
-                  body: body,
-                  labels: ["dependabot", "security"]
-                });
-              }
-            }
-        env:
-          ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
+        const alreadyExists = existingIssues.find(i => i.title === title);
+        if (!alreadyExists) {
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ["dependabot", "security"]
+          });
+        }
+      }
+  env:
+    ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
