@@ -1,8 +1,0 @@
-{
-  "title": "-src_pages_simbiosis_en.html",
-  "text": "## [[Tags]]\n[[HTML]]\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Symbiosis - English</title>\n  <!-- Ajusta la ruta según la estructura (si está en src/pages/) -->\n  <link rel=\"stylesheet\" href=\"../assets/styles.css\">\n</head>\n<body>\n  <h1>Welcome to Symbiosis in English</h1>\n  <p>This is the English version of our site. Here you can find the content tailored for an English-speaking audience.</p>\n</body>\n</html>\n\n```",
-  "tags": "[[HTML]]",
-  "type": "text/markdown",
-  "created": "20250605155046827",
-  "modified": "20250605155046827"
-}
