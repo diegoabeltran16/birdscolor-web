@@ -7,8 +7,8 @@ jobs:
   create-issues:
     runs-on: ubuntu-latest
     permissions:
-      security-events: read     # ✅ válido en repos públicos
-      issues: write             # ✅ necesario para crear issues
+      security-events: read
+      issues: write
 
     steps:
       - name: Fetch open Dependabot alerts
@@ -22,7 +22,6 @@ jobs:
               state: "open",
               per_page: 100
             });
-            // Devolvemos las alertas completas
             return response.data;
 
       - name: Create issues for high/critical alerts only
@@ -30,7 +29,6 @@ jobs:
         with:
           script: |
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
-
             for (const alert of alerts) {
               const severity = alert.security_advisory.severity.toLowerCase();
               if (!['high', 'critical'].includes(severity)) continue;
@@ -39,7 +37,8 @@ jobs:
               const summary = alert.security_advisory.summary;
               const description = alert.security_advisory.description;
               const title = `🚨 [${severity.toUpperCase()}] ${summary} in ${pkg.ecosystem}:${pkg.name}`;
-              const body = `### ⚠️ Vulnerabilidad detectada (Severidad: ${severity.toUpperCase()})
+              const body = `
+### ⚠️ Vulnerabilidad detectada (Severidad: ${severity.toUpperCase()})
 
 **Paquete afectado:** \`${pkg.name}\`  
 **Ecosistema:** ${pkg.ecosystem}  
@@ -52,9 +51,9 @@ ${description}
 
 ---
 
-Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.`;
+Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.
+`.trim();
 
-              // Verificar si ya existe un issue abierto con este título
               const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
