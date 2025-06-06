@@ -1,58 +1,102 @@
-- name: Create issues for high/critical alerts only
-  uses: actions/github-script@v7
-  with:
-    script: |
-      // Parseamos la salida JSON del paso anterior
-      const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+# --------------------------------------------
+# .github/workflows/dependabot-to-issue.yml
+# --------------------------------------------
 
-      for (const alert of alerts) {
-        const severity = alert.security_advisory.severity.toLowerCase();
-        if (!['high', 'critical'].includes(severity)) continue;
+name: Create High/Critical Dependabot Issues
 
-        const pkg = alert.dependency.package;
-        const summary = alert.security_advisory.summary;
-        const description = alert.security_advisory.description;
+# 1) Evento manual (workflow_dispatch) y ejecución diaria (schedule)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # Cada día a las 03:00 UTC
 
-        // Construimos el título del issue (versión sin backticks)
-        const title = "🚨 [" + severity.toUpperCase() + "] "
-          + summary + " in " + pkg.ecosystem + ":" + pkg.name;
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
 
-        // Construimos el cuerpo del issue sin backticks
-        const body = [
-          "### ⚠️ Vulnerabilidad detectada (Severidad: " + severity.toUpperCase() + ")",
-          "",
-          "**Paquete afectado:** `" + pkg.name + "`  ",
-          "**Ecosistema:** " + pkg.ecosystem + "  ",
-          "**Vulnerabilidad:** " + summary + "  ",
-          "",
-          "**Descripción completa:**  ",
-          description,
-          "",
-          "**Dependabot URL:** [Ver alerta en GitHub](" + alert.html_url + ")",
-          "",
-          "---",
-          "",
-          "Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica."
-        ].join("\n");
+    # Permisos necesarios:
+    # - security-events: para leer las alertas de Dependabot (solo en repos públicos o con Advanced Security habilitado)
+    # - issues: para crear issues en este repositorio
+    permissions:
+      security-events: read
+      issues: write
 
-        // Verificar si ya existe un issue abierto con este título
-        const { data: existingIssues } = await github.rest.issues.listForRepo({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          state: "open",
-          labels: "dependabot,security"
-        });
+    steps:
+      # 2) Paso: Obtener todas las alertas abiertas de Dependabot
+      - name: Fetch open Dependabot alerts
+        id: fetch_alerts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const response = await github.rest.dependabot.listAlertsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100
+            });
+            return response.data;
 
-        const alreadyExists = existingIssues.find(i => i.title === title);
-        if (!alreadyExists) {
-          await github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: title,
-            body: body,
-            labels: ["dependabot", "security"]
-          });
-        }
-      }
-  env:
-    ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
+      # 3) Paso: Crear un issue por cada alerta de severidad HIGH o CRITICAL
+      - name: Create issues for high/critical alerts only
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Convertimos la salida JSON del paso anterior a un array de alertas
+            const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+
+            for (const alert of alerts) {
+              const severity = alert.security_advisory.severity.toLowerCase();
+              if (!['high', 'critical'].includes(severity)) {
+                continue;
+              }
+
+              const pkg = alert.dependency.package;
+              const summary = alert.security_advisory.summary;
+              const description = alert.security_advisory.description;
+
+              // Construimos el título del issue (sin usar backticks en el YAML)
+              const title = 
+                "🚨 [" + severity.toUpperCase() + "] " +
+                summary + " in " + pkg.ecosystem + ":" + pkg.name;
+
+              // Construimos el body del issue como un array de líneas 
+              // y luego lo unimos con "\n" para evitar backticks en el YAML
+              const body = [
+                "### ⚠️ Vulnerabilidad detectada (Severidad: " + severity.toUpperCase() + ")",
+                "",
+                "**Paquete afectado:** `" + pkg.name + "`  ",
+                "**Ecosistema:** " + pkg.ecosystem + "  ",
+                "**Vulnerabilidad:** " + summary + "  ",
+                "",
+                "**Descripción completa:**  ",
+                description,
+                "",
+                "**Dependabot URL:** [Ver alerta en GitHub](" + alert.html_url + ")",
+                "",
+                "---",
+                "",
+                "Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica."
+              ].join("\n");
+
+              // Verificar si ya existe un issue abierto con el mismo título
+              const { data: existingIssues } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                labels: "dependabot,security"
+              });
+
+              const alreadyExists = existingIssues.find(i => i.title === title);
+              if (!alreadyExists) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ["dependabot", "security"]
+                });
+              }
+            }
+        env:
+          # Esta variable recoge el `return response.data` del primer step
+          ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
