@@ -100,7 +100,7 @@ jobs:
         env:
           # Esta variable recoge el `return response.data` del primer step
           ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
-=======
+---
 - name: Create issues for high/critical alerts only
   uses: actions/github-script@v7
   with:
