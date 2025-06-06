@@ -1,19 +1,21 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # 🔐 Seguridad en dependencias Node.js (JavaScript/React/Next.js)
+  - package-ecosystem: "npm"
+    directory: "/"                  # Raíz del proyecto (package.json está aquí)
     schedule:
-      interval: "weekly"
+      interval: "daily"             # Revisión diaria para máxima protección
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "direct"   # Solo actualiza dependencias directas
+    groups:
+      js-security:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+
+  # 🔧 GitHub Actions
   - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-  - package-ecosystem: "nuget"
-    directory: "/code/"
+    directory: "/"                  # Workflows en .github/workflows/
     schedule:
       interval: "weekly"

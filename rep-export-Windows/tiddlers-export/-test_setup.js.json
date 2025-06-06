@@ -1,0 +1,8 @@
+{
+  "title": "-test_setup.js",
+  "text": "## [[Tags]]\n[[JavaScript]]\n\n```javascript\n// test/setup.js\nimport { JSDOM } from \"jsdom\";\n\nconst dom = new JSDOM(\"<!doctype html><html><body></body></html>\", {\n  url: \"https://birdscolor.com\",\n  pretendToBeVisual: true\n});\n\nconst { window } = dom;\n\nglobalThis.window = window;\nglobalThis.document = window.document;\nglobalThis.localStorage = window.localStorage;\nglobalThis.sessionStorage = window.sessionStorage;\n\n// 🛡️ Define solo propiedades no protegidas y no definidas\nfor (const prop of Object.getOwnPropertyNames(window)) {\n  if (!(prop in globalThis)) {\n    Object.defineProperty(globalThis, prop, {\n      get: () => window[prop],\n      configurable: true,\n      enumerable: true\n    });\n  }\n}\n\n```",
+  "tags": "[[JavaScript]]",
+  "type": "text/markdown",
+  "created": "20250605155046904",
+  "modified": "20250605155046904"
+}
