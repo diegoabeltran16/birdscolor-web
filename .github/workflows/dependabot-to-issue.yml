@@ -9,8 +9,8 @@ jobs:
   create-issues:
     runs-on: ubuntu-latest
     permissions:
-      security-events: read
-      issues: write
+      security-events: read     # Válido en repos públicos
+      issues: write             # Necesario para crear issues
 
     steps:
       - name: Fetch open Dependabot alerts
@@ -30,6 +30,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Parseamos la salida JSON del paso anterior
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
 
             for (const alert of alerts) {
@@ -39,25 +40,30 @@ jobs:
               const pkg = alert.dependency.package;
               const summary = alert.security_advisory.summary;
               const description = alert.security_advisory.description;
-              const title = `🚨 [${severity.toUpperCase()}] ${summary} in ${pkg.ecosystem}:${pkg.name}`;
-              const body = `
-### ⚠️ Vulnerabilidad detectada (Severidad: ${severity.toUpperCase()})
+              
+              // Construimos el título del issue
+              const title = "🚨 [" + severity.toUpperCase() + "] "
+                + summary + " in " + pkg.ecosystem + ":" + pkg.name;
 
-**Paquete afectado:** \`${pkg.name}\`  
-**Ecosistema:** ${pkg.ecosystem}  
-**Vulnerabilidad:** ${summary}  
+              // Construimos el cuerpo del issue como un array de líneas y luego unimos con '\n'
+              const body = [
+                "### ⚠️ Vulnerabilidad detectada (Severidad: " + severity.toUpperCase() + ")",
+                "",
+                "**Paquete afectado:** `" + pkg.name + "`  ",
+                "**Ecosistema:** " + pkg.ecosystem + "  ",
+                "**Vulnerabilidad:** " + summary + "  ",
+                "",
+                "**Descripción completa:**  ",
+                description,
+                "",
+                "**Dependabot URL:** [Ver alerta en GitHub](" + alert.html_url + ")",
+                "",
+                "---",
+                "",
+                "Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica."
+              ].join("\n");
 
-**Descripción completa:**  
-${description}
-
-**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})
-
----
-
-Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.
-`.trim();
-
-              // Verificar si ya existe un issue abierto con este título
+              // Verificamos si ya existe un issue abierto con este título
               const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
