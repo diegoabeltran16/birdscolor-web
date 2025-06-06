@@ -1,8 +1,0 @@
-{
-  "title": "-.github_workflows_deploy.yml",
-  "text": "## [[Tags]]\nYAML [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]] [[⚙️ Automatización]] [[⚙️🧪 tests/]]\n\n```yaml\n# .github/workflows/deploy.yml\nname: 🛠️ CI + 🚀 Deploy BirdsColor\n\non:\n  push:\n    branches: [main]\n\njobs:\n  build-and-deploy:\n    runs-on: ubuntu-latest\n\n    steps:\n    - name: 📥 Clonar repositorio\n      uses: actions/checkout@v3\n\n    - name: 🔧 Instalar Node y dependencias\n      uses: actions/setup-node@v3\n      with:\n        node-version: 18\n\n    - run: npm ci\n\n    - name: ✅ Ejecutar pruebas unitarias\n      run: npm test\n\n    - name: 🚀 Publicar en GitHub Pages\n      if: success()\n      uses: peaceiris/actions-gh-pages@v3\n      with:\n        github_token: ${{ secrets.GITHUB_TOKEN }}\n        publish_dir: ./src\n\n```",
-  "tags": "YAML [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]] [[⚙️ Automatización]] [[⚙️🧪 tests/]]",
-  "type": "text/markdown",
-  "created": "20250605164433481",
-  "modified": "20250605164433481"
-}

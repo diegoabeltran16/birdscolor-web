@@ -1,8 +1,0 @@
-{
-  "title": "-package.json",
-  "text": "## [[Tags]]\nJSON [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]]\n\n```json\n{\n  \"name\": \"birdscolor-web\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Repositorio del proyecto BirdsColor - Página interactiva y almacenamiento de datos en OneDrive.\",\n  \"main\": \"index.js\",\n  \"directories\": {\n    \"test\": \"test\"\n  },\n  \n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"mocha test\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/diegoabeltran16/birdscolor-web.git\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"bugs\": {\n    \"url\": \"https://github.com/diegoabeltran16/birdscolor-web/issues\"\n  },\n  \"homepage\": \"https://github.com/diegoabeltran16/birdscolor-web#readme\",\n  \"devDependencies\": {\n    \"chai\": \"^5.2.0\",\n    \"jsdom\": \"^26.0.0\",\n    \"mocha\": \"^11.1.0\",\n    \"sinon\": \"^19.0.2\"\n  }\n}\n\n```",
-  "tags": "JSON [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]]",
-  "type": "text/markdown",
-  "created": "20250605164433446",
-  "modified": "20250605164433446"
-}
