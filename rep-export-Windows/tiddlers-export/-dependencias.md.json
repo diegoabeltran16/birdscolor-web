@@ -1,8 +1,0 @@
-{
-  "title": "-dependencias.md",
-  "text": "## [[Tags]]\n[[Markdown]]\n\n```markdown\n# 📦 Dependencias de BirdsColor-Web\n\n| Paquete       | Versión | Tipo       | Propósito                                  |\n|---------------|---------|------------|--------------------------------------------|\n| `mocha`       | 10.2.0  | Desarrollo | Framework de pruebas unitarias             |\n| `chai`        | 4.3.10  | Desarrollo | Librería de assertions para tests          |\n| `sinon`       | 17.0.1  | Desarrollo | Mocks y espías para pruebas avanzadas      |\n| `esbuild`     | 0.20.2  | Desarrollo | Empaquetador ultrarrápido (si aplicable)   |\n| `npm-check`   | 6.0.0+  | Desarrollo | Auditoría interactiva de versiones y paquetes |\n\n> ⚙️ Generado a partir de `package-lock.json` y auditoría técnica (`check-all.sh`)\n\n🗂️ Este documento forma parte de la documentación técnica del módulo base (`m.0`) y está vinculado al ciclo 1 de desarrollo (`C-1`).\n\n🔄 Última actualización: Abril 2025\n\n```",
-  "tags": "[[Markdown]]",
-  "type": "text/markdown",
-  "created": "20250605155046510",
-  "modified": "20250605155046510"
-}
