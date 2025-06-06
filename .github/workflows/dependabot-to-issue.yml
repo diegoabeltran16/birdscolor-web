@@ -46,15 +46,15 @@ jobs:
 **Vulnerabilidad:** ${summary}  
 
 **Descripción completa:**  
-${description}  
+${description}
 
-**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})  
+**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})
 
----  
+---
 
 Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.`;
 
-              // Verificamos si ya existe un issue con este título
+              // Verificar si ya existe un issue con este título abierto
               const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -69,7 +69,7 @@ Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades
                   repo: context.repo.repo,
                   title: title,
                   body: body,
-                  labels: ["dependabot", "security"]
+                  labels: ["dependency", "security"]
                 });
               }
             }

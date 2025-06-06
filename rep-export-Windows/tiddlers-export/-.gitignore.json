@@ -1,0 +1,8 @@
+{
+  "title": "-.gitignore",
+  "text": "## [[Tags]]\n[[--- 🧬 Por Clasificar]] [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]]\n\n```gitignore\n# Detalles del proyecto\nproject-details/\n\n# Node modules\nnode_modules/\n\n# Logs\n*.log\n\n# Build outputs\ndist/\nbuild/\ncoverage/\n\n# Env files\n.env\n.env.local\n\n# Editor directories and system files\n.vscode/\n.idea/\n.DS_Store\nThumbs.db\n\n# Python backend for club management\n__pycache__/\n*.py[cod]      # Python compiled files\n*$py.class\n*.so\n.Python\nenv/\n.env           # Where database passwords are stored\nvenv/          # Virtual environment for testing\n.venv\n\n# Teacher IDE settings\n.vscode/       # Ms. Rodriguez uses VS Code\n.idea/         # Mr. Chen uses PyCharm\n\n# Local development & testing\ninstance/\n.pytest_cache/\n.coverage      # Test coverage reports\nhtmlcov/\n\n# Staff computer files\n.DS_Store      # For teachers with Macs\nThumbs.db      # For teachers with Windows\n\n# Exported files\nrep-export-Windows/\n\n\n```",
+  "tags": "[[--- 🧬 Por Clasificar]] [[--- Codigo]] [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]]",
+  "type": "text/markdown",
+  "created": "20250605164433415",
+  "modified": "20250605164433415"
+}
