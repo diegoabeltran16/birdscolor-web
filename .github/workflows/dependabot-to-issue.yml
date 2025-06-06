@@ -37,37 +37,39 @@ jobs:
 
               const pkg = alert.dependency.package;
               const summary = alert.security_advisory.summary;
+              const description = alert.security_advisory.description;
               const title = `🚨 [${severity.toUpperCase()}] ${summary} in ${pkg.ecosystem}:${pkg.name}`;
               const body = `### ⚠️ Vulnerabilidad detectada (Severidad: ${severity.toUpperCase()})
 
 **Paquete afectado:** \`${pkg.name}\`  
 **Ecosistema:** ${pkg.ecosystem}  
 **Vulnerabilidad:** ${summary}  
+
 **Descripción completa:**  
-${alert.security_advisory.description}
+${description}  
 
-**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})
+**Dependabot URL:** [Ver alerta en GitHub](${alert.html_url})  
 
----
+---  
 
 Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.`;
 
-              // Check if an open issue with this exact title already exists
-              const { data: issues } = await github.rest.issues.listForRepo({
+              // Verificamos si ya existe un issue con este título
+              const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: "open",
                 labels: "dependabot,security"
               });
-              const exists = issues.find(i => i.title === title);
+              const alreadyExists = existingIssues.find(i => i.title === title);
 
-              if (!exists) {
+              if (!alreadyExists) {
                 await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   title: title,
                   body: body,
-                  labels: ["security", "dependabot"]
+                  labels: ["dependabot", "security"]
                 });
               }
             }
