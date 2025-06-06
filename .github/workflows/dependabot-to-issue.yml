@@ -22,6 +22,7 @@ jobs:
               state: "open",
               per_page: 100
             });
+            // Devolvemos las alertas completas
             return response.data;
 
       - name: Create issues for high/critical alerts only
@@ -29,6 +30,7 @@ jobs:
         with:
           script: |
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+
             for (const alert of alerts) {
               const severity = alert.security_advisory.severity.toLowerCase();
               if (!['high', 'critical'].includes(severity)) continue;
@@ -52,16 +54,16 @@ ${description}
 
 Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.`;
 
-              // Verifica si ya existe
-              const { data: issues } = await github.rest.issues.listForRepo({
+              // Verificar si ya existe un issue abierto con este título
+              const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: "open",
                 labels: "dependabot,security"
               });
 
-              const exists = issues.find(i => i.title === title);
-              if (!exists) {
+              const alreadyExists = existingIssues.find(i => i.title === title);
+              if (!alreadyExists) {
                 await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
