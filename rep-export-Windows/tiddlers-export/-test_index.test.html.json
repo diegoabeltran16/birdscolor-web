@@ -1,8 +1,0 @@
-{
-  "title": "-test_index.test.html",
-  "text": "## [[Tags]]\n[[HTML]]\n\n```html\n<!-- test/index.test.html -->\n<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>BirdsColor Test</title>\n</head>\n<body>\n  <div id=\"icono\">🐤</div>\n  <div id=\"spinner\" style=\"display: none;\">⏳</div>\n</body>\n</html>\n\n\n```",
-  "tags": "[[HTML]]",
-  "type": "text/markdown",
-  "created": "20250605155046873",
-  "modified": "20250605155046873"
-}

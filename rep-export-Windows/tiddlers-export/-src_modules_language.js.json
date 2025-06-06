@@ -1,8 +1,0 @@
-{
-  "title": "-src_modules_language.js",
-  "text": "## [[Tags]]\nJavaScript [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]] [[--- Codigo]] [[⚙️🧬 src/]]\n\n```javascript\n// language.js\ndocument.addEventListener(\"DOMContentLoaded\", function() {\n    // Si no existe una preferencia de idioma, la detecta y la guarda\n    if (!localStorage.getItem(\"idioma\")) {\n        const userLang = navigator.language || navigator.userLanguage;\n        const langCode = userLang.startsWith(\"es\") ? \"es\" : \"en\";\n        localStorage.setItem(\"idioma\", langCode);\n    }\n});\n\n// Función para cambiar el idioma manualmente (usa el selector en index.html)\nfunction cambiarIdioma(lang) {\n    localStorage.setItem(\"idioma\", lang);\n    // No redirigimos aquí; la redirección se hará al interactuar con el pollito\n    console.log(\"Idioma cambiado a:\", lang);\n}\n\n```",
-  "tags": "JavaScript [[--- 🌀 Helices de desarrollo]] [[--- 🎯 Detalles del proyecto]] [[--- 🗂 Principios de programación]] [[--- Codigo]] [[⚙️🧬 src/]]",
-  "type": "text/markdown",
-  "created": "20250605164433629",
-  "modified": "20250605164433629"
-}
