@@ -2,6 +2,8 @@ name: Create High/Critical Dependabot Issues
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # Se ejecuta todos los días a las 03:00 UTC
 
 jobs:
   create-issues:
@@ -29,6 +31,7 @@ jobs:
         with:
           script: |
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+
             for (const alert of alerts) {
               const severity = alert.security_advisory.severity.toLowerCase();
               if (!['high', 'critical'].includes(severity)) continue;
@@ -54,6 +57,7 @@ ${description}
 Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica.
 `.trim();
 
+              // Verificar si ya existe un issue abierto con este título
               const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
