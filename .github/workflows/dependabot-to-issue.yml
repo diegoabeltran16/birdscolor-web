@@ -1,4 +1,4 @@
-name: Create Dependabot Issues
+name: Create High/Critical Dependabot Issues
 
 on:
   workflow_dispatch:
@@ -11,7 +11,6 @@ jobs:
     permissions:
       issues: write
       contents: read
-      security-events: read
     steps:
       - name: Fetch open Dependabot alerts
         id: fetch_alerts
@@ -27,58 +26,46 @@ jobs:
             });
             return response.data;
 
-      - name: Create issues for all alerts
+      - name: Create issues for high/critical alerts only
         uses: actions/github-script@v7
+        env:
+          ALERTS_PAYLOAD: ${{ steps.fetch_alerts.outputs.result }}
         with:
           github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
           script: |
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
 
             for (const alert of alerts) {
-              if (!alert.security_advisory || !alert.dependency?.package) continue;
+              const sev = alert.security_advisory.severity.toLowerCase();
+              if (!['high', 'critical'].includes(sev)) continue;
 
-              const advisory = alert.security_advisory;
-              const dependency = alert.dependency;
-              const pkg = dependency.package;
-
-              const severity = advisory.severity || "UNKNOWN";
-              const title = `🛡️ [${severity}] ${advisory.summary} in ${pkg.ecosystem}:${pkg.name}`;
-
-              const identifiers = advisory.identifiers.map(
-                id => `- **${id.type}**: ${id.value}`
-              ).join("\n");
+              const pkg = alert.dependency.package;
+              const title = `🚨 [${sev.toUpperCase()}] ${alert.security_advisory.summary} in ${pkg.ecosystem}:${pkg.name}`;
 
               const body = [
-                `## 📦 Paquete afectado`,
-                `- **Nombre:** \`${pkg.name}\``,
-                `- **Ecosistema:** ${pkg.ecosystem}`,
+                `### ⚠️ Vulnerabilidad detectada (Severidad: ${sev.toUpperCase()})`,
                 ``,
-                `## ⚠️ Vulnerabilidad`,
-                `- **Severidad:** ${severity}`,
-                `- **Resumen:** ${advisory.summary}`,
+                `**Paquete afectado:** \`${pkg.name}\`  `,
+                `**Ecosistema:** ${pkg.ecosystem}  `,
+                `**Vulnerabilidad:** ${alert.security_advisory.summary}  `,
                 ``,
-                `## 🧠 Descripción`,
-                `${advisory.description}`,
+                `**Descripción completa:**`,
+                alert.security_advisory.description,
                 ``,
-                `## 🆔 Identificadores`,
-                identifiers || "_No hay identificadores disponibles._",
-                ``,
-                `## 🔗 Enlace a la alerta`,
-                `[Ver en Dependabot](${alert.html_url})`,
+                `**Dependabot URL:** [Ver alerta](${alert.html_url})`,
                 ``,
                 `---`,
-                `Este issue fue generado automáticamente desde Dependabot.`
-              ].join("\n");
+                `Este issue ha sido generado automáticamente.`
+              ].join('\n');
 
-              const { data: existingIssues } = await github.rest.issues.listForRepo({
+              const { data: existing } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: "open",
                 labels: "dependabot,security"
               });
 
-              const exists = existingIssues.find(i => i.title === title);
-              if (!exists) {
+              if (!existing.find(i => i.title === title)) {
                 await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -88,5 +75,3 @@ jobs:
                 });
               }
             }
-        env:
-          ALERTS_PAYLOAD: ${{ toJson(steps.fetch_alerts.outputs.result) }}
