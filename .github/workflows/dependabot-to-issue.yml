@@ -27,41 +27,28 @@ jobs:
             });
             return response.data;
 
-      - name: Create issues for alerts ≥ moderate
+      - name: Create issues for all Dependabot alerts
         uses: actions/github-script@v7
         env:
           ALERTS_PAYLOAD: ${{ steps.fetch_alerts.outputs.result }}
         with:
           github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
           script: |
-            // Puedes ajustar aquí tu umbral mínimo:
-            const allowedSeverities = ['low','moderate','high','critical'];
-            const minSeverity    = 'moderate';               // 'low', 'moderate', 'high' o 'critical'
-            const thresholdIndex = allowedSeverities.indexOf(minSeverity);
-
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
             console.log(`🔔 Total alertas encontradas: ${alerts.length}`);
 
             for (const alert of alerts) {
-              // seguridad: descartar alertas sin advisory o dependency
+              // Verificar que tenga advisory y paquete
               if (!alert.security_advisory || !alert.dependency?.package) {
                 console.log('❌ Alerta incompleta, salto:', alert);
                 continue;
               }
 
               const sev = alert.security_advisory.severity.toLowerCase();
-              console.log(`⚠️ Severidad detectada: ${sev}`);
+              const pkg = alert.dependency.package;
 
-              // filtrar por umbral
-              if (allowedSeverities.indexOf(sev) < thresholdIndex) {
-                console.log(`   ↳ Severidad "${sev}" por debajo de "${minSeverity}", salto.`);
-                continue;
-              }
-
-              // preparar título y cuerpo
-              const pkg   = alert.dependency.package;
-              const title = `🚨 [${sev.toUpperCase()}] ${alert.security_advisory.summary} — ${pkg.name}`;
-              const body  = [
+              const title = `🚨 [${sev.toUpperCase()}] ${alert.security_advisory.summary} — ${pkg.ecosystem}:${pkg.name}`;
+              const body = [
                 `### ⚠️ Vulnerabilidad (Severidad: ${sev.toUpperCase()})`,
                 ``,
                 `**Paquete afectado:** \`${pkg.name}\`  `,
@@ -77,7 +64,7 @@ jobs:
                 `Este issue ha sido generado automáticamente.`
               ].join('\n');
 
-              // comprobar duplicados
+              // Comprobar si ya existe un issue con este título
               const { data: existing } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -89,7 +76,7 @@ jobs:
                 continue;
               }
 
-              // crear issue
+              // Crear el issue
               console.log('   ↳ Creando issue:', title);
               await github.rest.issues.create({
                 owner: context.repo.owner,
