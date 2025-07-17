@@ -1,0 +1,35 @@
+name: "CodeQL Security Scan"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # Opcional: limita rutas si quieres
+    paths:
+      - 'src/**/*.js'
+      - 'src/**/*.ts'
+      - '.github/workflows/**'
+
+jobs:
+  codeql:
+    name: Analyze with CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write   # necesario para reportar resultados
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          # Solo JavaScript/TypeScript y workflows de Actions
+          languages: [ "javascript", "typescript", "actions" ]
+          # Si usas TS por separado, puedes listarlo junto a "javascript"
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
