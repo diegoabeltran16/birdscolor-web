@@ -55,3 +55,8 @@ estructura.txt
 # Ignore all node_modules directories
 node_modules
 node_modules/
+
+# Ignore CI/CD documentation
+CI_CD_docs/
+.CI_CD_docs/
+CI_CD_docs

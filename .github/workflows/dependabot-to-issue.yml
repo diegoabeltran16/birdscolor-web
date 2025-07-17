@@ -7,18 +7,19 @@ name: Create High/Critical Dependabot Issues
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *'  # Cada día a las 03:00 UTC
+    - cron: '0 3 * * *'  # Ejecutar todos los días a las 03:00 UTC
 
 jobs:
   create-issues:
     runs-on: ubuntu-latest
 
-    # Permisos necesarios:
-    # - security-events: para leer las alertas de Dependabot (solo en repos públicos o con Advanced Security habilitado)
-    # - issues: para crear issues en este repositorio
     permissions:
       security-events: read
       issues: write
+
+    env:
+      # Esto es opcional solo para que VSCode no marque advertencias
+      FGT_DEPENDABOT_TOKEN: ''
 
     steps:
       # 1) Obtener todas las alertas abiertas de Dependabot
@@ -26,6 +27,7 @@ jobs:
         id: fetch_alerts
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
           script: |
             const response = await github.rest.dependabot.listAlertsForRepo({
               owner: context.repo.owner,
@@ -39,8 +41,8 @@ jobs:
       - name: Create issues for high/critical alerts only
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
           script: |
-            // Convertimos la salida JSON del paso anterior a un array de alertas
             const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
 
             for (const alert of alerts) {
@@ -51,12 +53,10 @@ jobs:
               const summary = alert.security_advisory.summary;
               const description = alert.security_advisory.description;
 
-              // Título del issue:
               const title =
                 "🚨 [" + severity.toUpperCase() + "] " +
                 summary + " in " + pkg.ecosystem + ":" + pkg.name;
 
-              // Cuerpo del issue (sin backticks en el YAML)
               const body = [
                 "### ⚠️ Vulnerabilidad detectada (Severidad: " + severity.toUpperCase() + ")",
                 "",
@@ -74,7 +74,6 @@ jobs:
                 "Este issue ha sido generado automáticamente para alertar sobre vulnerabilidades de severidad alta o crítica."
               ].join("\n");
 
-              // Verificar si ya existe un issue abierto con el mismo título
               const { data: existingIssues } = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
