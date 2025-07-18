@@ -13,24 +13,27 @@ jobs:
       contents: write
 
     steps:
-      - name: 📥 Checkout repository
+      - name: 📥 Clonar repositorio
         uses: actions/checkout@v4
 
-      - name: 🔧 Setup Node.js
+      - name: 🔧 Instalar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: 💾 Install dependencies
+      - name: ⬆️ Actualizar npm
+        run: npm install -g npm@latest
+
+      - name: 💾 Instalar dependencias
         run: npm ci
 
-      - name: 🔨 Build site
+      - name: 🔨 Build del sitio
         run: npm run build
 
-      - name: ✅ Run tests
+      - name: ✅ Ejecutar pruebas unitarias
         run: npm test
 
-      - name: 🚀 Deploy to GitHub Pages
+      - name: 🚀 Publicar en GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
