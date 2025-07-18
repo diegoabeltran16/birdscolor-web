@@ -2,7 +2,8 @@ name: 🛠️ CI + 🚀 Deploy BirdsColor
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
@@ -19,9 +20,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: ⬆️ Actualizar npm
-        run: npm install -g npm@latest
 
       - name: 💾 Instalar dependencias
         run: npm ci
