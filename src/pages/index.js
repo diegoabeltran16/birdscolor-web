@@ -4,30 +4,53 @@
 // Parte de: ["--- 🗂 Principios de programación"]
 // Usa: ["-src_security_securityHeaders.js", "-src_modules_cookies.js", "-src_modules_language.js", "-src_script.js"]
 
-import Head from 'next/head';
-import Script from 'next/script';
-import { useEffect } from 'react';
+import Head from 'next/head'
+import Script from 'next/script'
+import { useEffect } from 'react'
 
 export default function Home() {
-  // (No usamos localStorage aquí; el módulo cookies.js se encargará de todo
-  //  en el lado del cliente)
+  useEffect(() => {
+    const icono = document.getElementById("icono");
+    const spinnerWrapper = document.getElementById("spinner");
+    const lang = localStorage.getItem("idioma") || "es";
 
-  // Opcional: Si quieres, podrías agregar aquí lógica relacionada con "isPollitoEnabled"
-  // usando useEffect, pero dado que cookies.js ya hace removeClass de "disabled",
-  // no es estrictamente necesario.
+    if (!icono) return;
+
+    icono.classList.add("heartbeat");
+    window.isPollitoEnabled = false;
+    icono.classList.add("disabled");
+
+    icono.addEventListener("click", () => {
+      if (!window.isPollitoEnabled) {
+        console.log("🔒 Aún no se ha aceptado/rechazado cookies.");
+        return;
+      }
+      icono.classList.add("bounce");
+      icono.style.display = "none";
+      if (spinnerWrapper) spinnerWrapper.style.display = "flex";
+      setTimeout(() => {
+        window.location.href = `/simbiosis_${lang}`;
+      }, 800);
+    });
+
+    // Limpieza del event listener al desmontar
+    return () => {
+      icono.removeEventListener("click", () => {});
+    };
+  }, []);
 
   return (
     <>
       {/* Meta y estilos globales */}
       <Head>
-        <title>BirdsColor - Interactivo</title>
+        <title>BirdsColor – Pollito Simbiótico</title>
         <meta charSet="UTF-8" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no"
         />
-        {/* CSS global ubicado en /public/assets/styles.css */}
-        <link rel="stylesheet" href="/assets/styles.css" />
+        {/* Elimina la siguiente línea */}
+        {/* <link rel="stylesheet" href="/assets/styles.css" /> */}
       </Head>
 
       {/* Google Analytics */}
@@ -44,16 +67,23 @@ export default function Home() {
         `}
       </Script>
 
+      {/* Banner de cookies */}
+      <div id="cookie-banner-container" />
+
+      {/* Fondo animado */}
+      <div className="background" />
+
       {/* Contenedor principal */}
-      <div className="background"></div>
       <div className="container">
-        {/* Imagen del pollito con id="icono" y clase "disabled" inicialmente */}
+        {/* Pollito latiendo */}
         <picture>
           <source
             srcSet="/assets/images/pollito-1024.webp"
             type="image/webp"
           />
           <img
+            id="icono"
+            className="icono disabled heartbeat"
             src="/assets/images/pollito-1024.png"
             srcSet="
               /assets/images/pollito-480.png 480w,
@@ -62,22 +92,20 @@ export default function Home() {
             "
             sizes="(max-width: 600px) 480px, (max-width: 1200px) 768px, 1024px"
             loading="lazy"
-            alt="Pollito"
-            className="icono disabled"
-            id="icono"
+            alt="Pollito Simbiótico"
           />
         </picture>
 
-        {/* Spinner */}
+        {/* Spinner (oculto hasta mostrarlo) */}
         <div id="spinner" className="spinner-wrapper" style={{ display: 'none' }}>
           <div className="spinner" role="status" aria-label="Cargando..." />
         </div>
       </div>
 
-      {/* Módulos JS funcionales (se ejecutan tras cargar la página en el navegador) */}
+      {/* Módulos “cliente” */}
       <Script src="/modules/language.js" strategy="afterInteractive" />
-      <Script src="/modules/cookies.js" strategy="afterInteractive" />
-      <Script src="/script.js" strategy="afterInteractive" />
+      <Script src="/modules/cookies.js"    strategy="afterInteractive" />
+      <Script src="/script.js"             strategy="afterInteractive" />
     </>
-  );
+  )
 }

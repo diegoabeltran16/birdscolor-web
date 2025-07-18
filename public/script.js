@@ -10,6 +10,10 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const icono = document.getElementById("icono");
+  if (!icono) {
+    console.error("No se encontró el elemento #icono");
+    return;
+  }
   const spinnerWrapper = document.getElementById("spinner");
   const lang = localStorage.getItem("idioma") || "es";
 
@@ -80,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!cookiesConsent && typeof showCookieBanner === "function") {
         showCookieBanner(); // En caso de que aún no se haya mostrado
       } else {
-        window.redirectTo(`simbiosis_${lang}.html`);
+        window.redirectTo(`/simbiosis_${lang}`);
       }
     }, 300);
   });
