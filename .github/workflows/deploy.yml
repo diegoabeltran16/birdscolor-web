@@ -2,8 +2,7 @@ name: 🛠️ CI + 🚀 Deploy BirdsColor
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-and-deploy:
