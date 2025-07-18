@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Repositorio del proyecto BirdsColor - Página interactiva y almacenamiento de datos en OneDrive.",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -29,12 +26,8 @@
   },
   "homepage": "https://github.com/diegoabeltran16/birdscolor-web#readme",
   "dependencies": {
-    "next": "^15.3.3",
-    "next": "^15.2.4",
+    "next": "^14.2.3",
     "react": "^18.2.0",
-    "react-dom": "^19.1.0"
-    "next": "^14.0.0",
-    "react": "^19.1.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

@@ -65,3 +65,7 @@ CI_CD_docs
 rep_export_Windows/
 .rep_export_Windows/
 rep_export_Windows
+
+# Ignore Next.js build artifacts
+.next
+.next/
