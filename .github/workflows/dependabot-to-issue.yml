@@ -1,0 +1,88 @@
+name: Create Dependabot Issues
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Fetch open Dependabot alerts
+        id: fetch_alerts
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
+          script: |
+            const response = await github.rest.dependabot.listAlertsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100
+            });
+            return response.data;
+
+      - name: Create issues for all Dependabot alerts
+        uses: actions/github-script@v7
+        env:
+          ALERTS_PAYLOAD: ${{ steps.fetch_alerts.outputs.result }}
+        with:
+          github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
+          script: |
+            const alerts = JSON.parse(process.env.ALERTS_PAYLOAD);
+            console.log(`🔔 Total alertas encontradas: ${alerts.length}`);
+
+            for (const alert of alerts) {
+              // Verificar que tenga advisory y paquete
+              if (!alert.security_advisory || !alert.dependency?.package) {
+                console.log('❌ Alerta incompleta, salto:', alert);
+                continue;
+              }
+
+              const sev = alert.security_advisory.severity.toLowerCase();
+              const pkg = alert.dependency.package;
+
+              const title = `🚨 [${sev.toUpperCase()}] ${alert.security_advisory.summary} — ${pkg.ecosystem}:${pkg.name}`;
+              const body = [
+                `### ⚠️ Vulnerabilidad (Severidad: ${sev.toUpperCase()})`,
+                ``,
+                `**Paquete afectado:** \`${pkg.name}\`  `,
+                `**Ecosistema:** ${pkg.ecosystem}  `,
+                `**Resumen:** ${alert.security_advisory.summary}  `,
+                ``,
+                `**Descripción completa:**`,
+                alert.security_advisory.description,
+                ``,
+                `**Dependabot URL:** [Ver alerta](${alert.html_url})`,
+                ``,
+                `---`,
+                `Este issue ha sido generado automáticamente.`
+              ].join('\n');
+
+              // Comprobar si ya existe un issue con este título
+              const { data: existing } = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                labels: "dependabot,security"
+              });
+              if (existing.find(i => i.title === title)) {
+                console.log('   ↳ Issue ya existe, salto.');
+                continue;
+              }
+
+              // Crear el issue
+              console.log('   ↳ Creando issue:', title);
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ["dependabot","security"]
+              });
+            }
