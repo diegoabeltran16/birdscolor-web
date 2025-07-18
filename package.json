@@ -11,8 +11,7 @@
     "test": "mocha --timeout 5000 --require test/setup.js \"test/**/*.js\"",
     "sync-docs": "node scripts/sync-to-tiddlers.cjs",
     "check-outdated": "npm outdated",
-    "check-security": "npm audit",
-    "check-interactive": "npx npm-check"
+    "check-security": "npm audit"
   },
   "repository": {
     "type": "git",
