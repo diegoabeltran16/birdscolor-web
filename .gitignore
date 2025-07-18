@@ -47,3 +47,16 @@ htmlcov/
 .DS_Store      # For teachers with Macs
 Thumbs.db      # For teachers with Windows
 
+# Exported files
+rep-export-Windows/
+rep-export-Windows
+estructura.txt
+
+# Ignore all node_modules directories
+node_modules
+node_modules/
+
+# Ignore CI/CD documentation
+CI_CD_docs/
+.CI_CD_docs/
+CI_CD_docs
