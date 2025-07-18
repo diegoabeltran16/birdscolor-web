@@ -13,7 +13,7 @@ jobs:
       contents: write
 
     steps:
-      - name: 📥 Checkout repository
+      - name: 📥 Clonar repositorio
         uses: actions/checkout@v4
 
       - name: 🔧 Instalar Node.js
@@ -33,13 +33,13 @@ jobs:
       - name: 💾 Install dependencies
         run: npm ci
 
-      - name: 🔨 Build site
+      - name: 🔨 Build del sitio
         run: npm run build
 
-      - name: ✅ Run tests
+      - name: ✅ Ejecutar pruebas unitarias
         run: npm test
 
-      - name: 🚀 Deploy to GitHub Pages
+      - name: 🚀 Publicar en GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
