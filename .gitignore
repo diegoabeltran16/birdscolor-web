@@ -60,3 +60,8 @@ node_modules/
 CI_CD_docs/
 .CI_CD_docs/
 CI_CD_docs
+
+# Ignore exported files from Windows
+rep_export_Windows/
+.rep_export_Windows/
+rep_export_Windows

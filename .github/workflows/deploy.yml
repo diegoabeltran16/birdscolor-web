@@ -1,34 +1,38 @@
-# .github/workflows/deploy.yml
 name: 🛠️ CI + 🚀 Deploy BirdsColor
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # ✅ Esto le da permiso al bot para hacer push
+      contents: write
 
     steps:
-      - name: 📥 Clonar repositorio
+      - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🔧 Instalar Node y dependencias
+      - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - run: npm ci
+      - name: 💾 Install dependencies
+        run: npm ci
 
-      - name: ✅ Ejecutar pruebas unitarias
+      - name: 🔨 Build site
+        run: npm run build
+
+      - name: ✅ Run tests
         run: npm test
 
-      - name: 🚀 Publicar en GitHub Pages
+      - name: 🚀 Deploy to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src
+          publish_dir: ./out
