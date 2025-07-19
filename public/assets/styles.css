@@ -7,36 +7,10 @@ body {
   align-items: center;
   height: 100vh;
   position: relative;
-  margin: 0;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  position: relative;
 }
 
 /* Pseudo-elemento para el fondo animado con colores en versión pastel */
 body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* Conic-gradient con los tonos pastel de la rueda de colores */
-  background: conic-gradient(
-      #FFADAD, /* Pastel rojo */
-      #FFD6A5, /* Pastel naranja */
-      #FDFFB6, /* Pastel amarillo */
-      #CAFFBF, /* Pastel verde */
-      #9BF6FF, /* Pastel azul */
-      #A0C4FF, /* Pastel índigo */
-      #BDB2FF, /* Pastel violeta */
-      #FFADAD  /* Regresa al pastel rojo para continuidad */
-  );
-  z-index: -1; /* Fondo detrás del contenido */
-  animation: hueRotate 20s linear infinite;
   content: "";
   position: absolute;
   top: 0;
@@ -62,18 +36,10 @@ body::before {
 @keyframes hueRotate {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
 }
 
 /* Contenedor del pollito */
 .container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
   position: relative;
   display: flex;
   justify-content: center;
@@ -88,21 +54,9 @@ body::before {
   height: auto;
   animation: heartbeat 1s infinite;
   cursor: pointer;
-  width: 150px;
-  height: auto;
-  animation: heartbeat 1s infinite;
-  cursor: pointer;
 }
 
 @keyframes heartbeat {
-  
-  0%   { transform: scale(1); }
-  10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
-  20%  { transform: scale(1); }     /* Regreso a la normalidad */
-  40%  { transform: scale(1.15); }    /* Expansión máxima (diástole) */
-  60%  { transform: scale(1.05); }    /* Inicio del retorno */
-  100% { transform: scale(1); }
-  
   0%   { transform: scale(1); }
   10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
   20%  { transform: scale(1); }     /* Regreso a la normalidad */
@@ -117,25 +71,12 @@ body::before {
 @keyframes bounce {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.2); }
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
 }
 
 .bounce {
   animation: bounce 0.5s;
-  animation: bounce 0.5s;
 }
 
-/* Contenedor centrado para evitar conflictos de transform */
-.spinner-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-/* Spinner giratorio sin modificar el posicionamiento */
 /* Contenedor centrado para evitar conflictos de transform */
 .spinner-wrapper {
   position: absolute;
@@ -153,22 +94,11 @@ body::before {
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top: 4px solid rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
   to { rotate: -360deg; } /* ✅ usar rotate solo (moderno) */
 }
-
-.container {
-  position: relative;
-}
-
 
 /* 📱 Responsive: tablets y móviles */
 @media (max-width: 900px) {
@@ -259,171 +189,78 @@ body::before {
 /* ESTILOS DEL DIAGRAMA VENN (SOLO PARA la página simbiosis) */
 /* ===================================================== */
 
-/* Tamaño y superposición para diagrama Venn real */
+/* Wrapper centrado en pantalla */
 .venn-wrapper {
-  position: relative;
-  width: 480px; /* Más grande para mejor superposición */
-  height: 420px;
-  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
   z-index: 3;
 }
 
-/* Se encapsulan los ítems del Venn dentro de .venn-wrapper */
+/* Elementos del diagrama Venn */
 .venn-wrapper .venn-item {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  top: 50%;
+  left: 50%;
+  width: 260px;
+  height: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: auto;
-  text-align: center;
-  cursor: pointer;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
 }
 
-/* Posicionamiento tipo Venn */
+/* Posicionamiento de círculos para formar diagrama Venn */
 .venn-wrapper #circle-left {
-  top: 60px;
-  left: 60px;
+  /* Triángulo equilátero: r·√3/2 ≈ 113px */
+  transform: translate(-50%, -50%) translate(-113px, -113px);
+  border-color: #7ed957;
 }
 .venn-wrapper #circle-right {
-  top: 60px;
-  left: 240px;
+  transform: translate(-50%, -50%) translate(113px, -113px);
+  border-color: #ff7aa2;
 }
 .venn-wrapper #circle-bottom {
-  top: 180px;
-  left: 150px;
+  transform: translate(-50%, -50%) translate(0px, 113px);
+  border-color: #8ee7ff;
 }
 
-/* Círculo interior */
+/* Círculos visibles */
 .venn-wrapper .venn-circle {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   background: transparent;
-  border: 2px solid transparent; /* Solo el anillo animado será visible */
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3rem;
   box-shadow: none;
   z-index: 1;
-  transition: background 0.3s, border 0.3s, box-shadow 0.3s;
+  top: 0;
+  left: 0;
+  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
 }
 
-/* Etiquetas: posición original, ocultas por defecto */
-.venn-wrapper .venn-label {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
-}
-
-/* Muestra la etiqueta solo en hover/focus del círculo */
-.venn-wrapper #circle-left:hover .venn-label,
-.venn-wrapper #circle-left:focus .venn-label {
-  opacity: 1;
-  pointer-events: auto;
-  box-shadow: 0 0 18px #6fe26f;
-  border-color: #6fe26f;
-  color: #2e7d32;
-}
-.venn-wrapper #circle-right:hover .venn-label,
-.venn-wrapper #circle-right:focus .venn-label {
-  opacity: 1;
-  pointer-events: auto;
-  box-shadow: 0 0 18px #ff9c9c;
-  border-color: #ff9c9c;
-  color: #c62828;
-}
-.venn-wrapper #circle-bottom:hover .venn-label,
-.venn-wrapper #circle-bottom:focus .venn-label {
-  opacity: 1;
-  pointer-events: auto;
-  box-shadow: 0 0 18px #9BF6FF;
-  border-color: #9BF6FF;
-  color: #1565c0;
-}
-
-/* Flechas para etiquetas */
-.venn-wrapper .label-top.cloud-bubble::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-top: 12px solid #fff;
-}
-.venn-wrapper .label-bottom::before {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 12px solid #fff;
-}
-
-/* Glow pastel en hover/focus según círculo + etiqueta */
-.venn-wrapper #circle-left:hover .venn-circle,
-.venn-wrapper #circle-left:focus .venn-circle {
-  background: #CAFFBF;
-  box-shadow: 0 0 32px 8px #6fe26f, 0 0 12px #fff;
-  border-color: #6fe26f;
-}
-.venn-wrapper #circle-left:hover .venn-label,
-.venn-wrapper #circle-left:focus .venn-label {
-  box-shadow: 0 0 18px #6fe26f;
-  border-color: #6fe26f;
-  color: #2e7d32;
-}
-
-.venn-wrapper #circle-right:hover .venn-circle,
-.venn-wrapper #circle-right:focus .venn-circle {
-  background: #FFADAD;
-  box-shadow: 0 0 32px 8px #ff9c9c, 0 0 12px #fff;
-  border-color: #ff9c9c;
-}
-.venn-wrapper #circle-right:hover .venn-label,
-.venn-wrapper #circle-right:focus .venn-label {
-  box-shadow: 0 0 18px #ff9c9c;
-  border-color: #ff9c9c;
-  color: #c62828;
-}
-
-.venn-wrapper #circle-bottom:hover .venn-circle,
-.venn-wrapper #circle-bottom:focus .venn-circle {
-  background: #9BF6FF;
-  box-shadow: 0 0 32px 8px #9BF6FF, 0 0 12px #fff;
-  border-color: #9BF6FF;
-}
-.venn-wrapper #circle-bottom:hover .venn-label,
-.venn-wrapper #circle-bottom:focus .venn-label {
-  box-shadow: 0 0 18px #9BF6FF;
-  border-color: #9BF6FF;
-  color: #1565c0;
-}
-
-/* El icono del centro permanece estático */
-.venn-wrapper .venn-circle > span {
-  animation: none !important;
-}
-
-/* Anillos giratorios del color del círculo interno */
+/* Anillos giratorios */
 .venn-wrapper .outer-ring {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
-  border: 4px dashed transparent; /* Por defecto transparente */
+  border: 4px dashed transparent;
   top: 0;
   left: 0;
   z-index: 0;
 }
+
 .venn-wrapper .ring-left {
   border-color: #6fe26f;
   animation: haloSpinLeft 12s linear infinite;
@@ -437,7 +274,112 @@ body::before {
   animation: heartbeat 2s infinite;
 }
 
-/* Animaciones */
+/* Etiquetas */
+.venn-wrapper .venn-label {
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 22px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  position: absolute;
+  transition: opacity 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.venn-wrapper .label-top {
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.venn-wrapper .label-bottom {
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Flechas para etiquetas */
+.venn-wrapper .label-top.cloud-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid #fff;
+}
+.venn-wrapper .label-bottom::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid #fff;
+}
+
+/* Efectos hover/focus - Círculo izquierdo (verde) */
+.venn-wrapper #circle-left:hover .venn-circle,
+.venn-wrapper #circle-left:focus .venn-circle {
+  background: #CAFFBF;
+  box-shadow: 0 0 32px 8px #6fe26f, 0 0 12px #fff;
+  border-color: #6fe26f;
+}
+.venn-wrapper #circle-left:hover .venn-label,
+.venn-wrapper #circle-left:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #6fe26f;
+  border-color: #6fe26f;
+  color: #2e7d32;
+}
+
+/* Efectos hover/focus - Círculo derecho (rojo) */
+.venn-wrapper #circle-right:hover .venn-circle,
+.venn-wrapper #circle-right:focus .venn-circle {
+  background: #FFADAD;
+  box-shadow: 0 0 32px 8px #ff9c9c, 0 0 12px #fff;
+  border-color: #ff9c9c;
+}
+.venn-wrapper #circle-right:hover .venn-label,
+.venn-wrapper #circle-right:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #ff9c9c;
+  border-color: #ff9c9c;
+  color: #c62828;
+}
+
+/* Efectos hover/focus - Círculo inferior (azul) */
+.venn-wrapper #circle-bottom:hover .venn-circle,
+.venn-wrapper #circle-bottom:focus .venn-circle {
+  background: #9BF6FF;
+  box-shadow: 0 0 32px 8px #9BF6FF, 0 0 12px #fff;
+  border-color: #9BF6FF;
+}
+.venn-wrapper #circle-bottom:hover .venn-label,
+.venn-wrapper #circle-bottom:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #9BF6FF;
+  border-color: #9BF6FF;
+  color: #1565c0;
+}
+
+/* Oculta el anillo animado al hacer hover/focus en el círculo */
+.venn-wrapper #circle-left:hover .outer-ring,
+.venn-wrapper #circle-left:focus .outer-ring,
+.venn-wrapper #circle-right:hover .outer-ring,
+.venn-wrapper #circle-right:focus .outer-ring,
+.venn-wrapper #circle-bottom:hover .outer-ring,
+.venn-wrapper #circle-bottom:focus .outer-ring {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Animaciones para anillos */
 @keyframes haloSpinLeft {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(-360deg);}
@@ -445,10 +387,6 @@ body::before {
 @keyframes haloSpinRight {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
-}
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1);}
-  50% { transform: scale(1.1);}
 }
 
 /* Responsive para móviles */
@@ -465,76 +403,16 @@ body::before {
     height: 120px;
   }
   .venn-wrapper #circle-left {
-    top: 18%;
-    left: 5%;
+    transform: translate(-50%, -50%) translate(-52px, -52px);
   }
   .venn-wrapper #circle-right {
-    top: 18%;
-    left: 55%;
+    transform: translate(-50%, -50%) translate(52px, -52px);
   }
   .venn-wrapper #circle-bottom {
-    top: 48%;
-    left: 30%;
+    transform: translate(-50%, -50%) translate(0px, 52px);
   }
 }
 
 #icono.disabled {
     cursor: not-allowed;
-}
-
-.venn-wrapper .label-top {
-  top: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.venn-wrapper .label-bottom {
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Tamaño y posición para diagrama Venn simétrico */
-.venn-wrapper {
-  position: relative;
-  width: 480px;
-  height: 420px;
-  margin: auto;
-}
-
-.venn-wrapper .venn-item {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Posiciones simétricas tipo Venn */
-.venn-wrapper #circle-left {
-  top: 60px;
-  left: 60px;
-}
-.venn-wrapper #circle-right {
-  top: 60px;
-  left: 240px;
-}
-.venn-wrapper #circle-bottom {
-  top: 180px;
-  left: 150px;
-}
-
-/* Etiquetas fuera del círculo */
-.venn-wrapper .label-top {
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.venn-wrapper .label-bottom {
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
 }
