@@ -1,68 +1,724 @@
-// File: src/pages/simbiosis_es.js
-import Head from 'next/head'
-import Script from 'next/script'
-import { useRouter } from 'next/router'
+/* Configuración base del body */
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
 
-export default function SimbiosisEs() {
-  const router = useRouter()
+/* Pseudo-elemento para el fondo animado con colores en versión pastel */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Conic-gradient con los tonos pastel de la rueda de colores */
+  background: conic-gradient(
+      #FFADAD, /* Pastel rojo */
+      #FFD6A5, /* Pastel naranja */
+      #FDFFB6, /* Pastel amarillo */
+      #CAFFBF, /* Pastel verde */
+      #9BF6FF, /* Pastel azul */
+      #A0C4FF, /* Pastel índigo */
+      #BDB2FF, /* Pastel violeta */
+      #FFADAD  /* Regresa al pastel rojo para continuidad */
+  );
+  z-index: -1; /* Fondo detrás del contenido */
+  animation: hueRotate 20s linear infinite;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Conic-gradient con los tonos pastel de la rueda de colores */
+  background: conic-gradient(
+      #FFADAD, /* Pastel rojo */
+      #FFD6A5, /* Pastel naranja */
+      #FDFFB6, /* Pastel amarillo */
+      #CAFFBF, /* Pastel verde */
+      #9BF6FF, /* Pastel azul */
+      #A0C4FF, /* Pastel índigo */
+      #BDB2FF, /* Pastel violeta */
+      #FFADAD  /* Regresa al pastel rojo para continuidad */
+  );
+  z-index: -1; /* Fondo detrás do conteúdo */
+  animation: hueRotate 20s linear infinite;
+}
 
-  // Opcional: función para mostrar panel/modal en vez de redirigir
-  const handleClick = (target) => {
-    if (target === 'cerebro') {
-      router.push('/cerebro')
-      // o mostrar panel/modal aquí
-    } else if (target === 'cuerpo') {
-      router.push('/cuerpo')
-    } else if (target === 'comunidad') {
-      router.push('/comunidad')
-      // o hacer scroll a sección
-    }
+/* Animación que rota el tono de los colores sin mover el contenedor */
+@keyframes hueRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Contenedor del pollito */
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
+}
+
+/* Imagen del pollito con efecto de latido a 60 BPM */
+.icono {
+  width: 150px;
+  height: auto;
+  animation: heartbeat 1s infinite;
+  cursor: pointer;
+  width: 150px;
+  height: auto;
+  animation: heartbeat 1s infinite;
+  cursor: pointer;
+}
+
+@keyframes heartbeat {
+  
+  0%   { transform: scale(1); }
+  10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
+  20%  { transform: scale(1); }     /* Regreso a la normalidad */
+  40%  { transform: scale(1.15); }    /* Expansión máxima (diástole) */
+  60%  { transform: scale(1.05); }    /* Inicio del retorno */
+  100% { transform: scale(1); }
+  
+  0%   { transform: scale(1); }
+  10%  { transform: scale(0.95); }  /* Contracción rápida (sístole) */
+  20%  { transform: scale(1); }     /* Regreso a la normalidad */
+  40%  { transform: scale(1.15); }    /* Expansión máxima (diástole) */
+  60%  { transform: scale(1.05); }    /* Inicio del retorno */
+  100% { transform: scale(1); }
+}
+
+
+
+/* Animación bounce: efecto puntual para feedback al clic */
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.bounce {
+  animation: bounce 0.5s;
+  animation: bounce 0.5s;
+}
+
+/* Contenedor centrado para evitar conflictos de transform */
+.spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Spinner giratorio sin modificar el posicionamiento */
+/* Contenedor centrado para evitar conflictos de transform */
+.spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Spinner giratorio sin modificar el posicionamiento */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { rotate: -360deg; } /* ✅ usar rotate solo (moderno) */
+}
+
+.container {
+  position: relative;
+}
+
+
+/* 📱 Responsive: tablets y móviles */
+@media (max-width: 900px) {
+  .icono {
+      width: 120px;
+  }
+  .spinner {
+      width: 40px;
+      height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .icono {
+      width: 90px;
+  }
+  .spinner {
+      width: 30px;
+      height: 30px;
+  }
+  .container {
+      flex-direction: column;
+      padding: 20px;
+      touch-action: none;
+  }
+}
+
+/* 📱 Boton de cookies */
+.cookie-button {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  margin: 5px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.cookie-button:hover {
+  background-color: #CAFFBF; /* verde pastel suave */
+  border-color: #A0C4FF;
+}
+
+#cookie-banner {
+  font-family: "Segoe UI", sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 2px solid #FFD6A5;
+  padding: 20px;
+  text-align: center;
+  z-index: 1000;
+  display: none; /* oculto por defecto */
+  backdrop-filter: blur(8px);
+  border-radius: 12px 12px 0 0;
+  color: #333;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 📱 Responsive: tablets y móviles el boton de cookies */
+
+@media (max-width: 600px) {
+  #cookie-banner {
+    font-size: 0.95rem;
+    padding: 15px;
   }
 
-  return (
-    <>
-      <Head>
-        <title>Simbiosis – Diagrama Venn</title>
-        <meta charSet="UTF-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no"
-        />
-      </Head>
+  #cookie-banner p {
+    margin-bottom: 12px;
+  }
 
-      {/* Diagrama Venn */}
-      <div className="venn-wrapper">
-        {/* Círculo superior izquierdo: Cerebro */}
-        <div className="venn-item" id="circle-left">
-          <div className="outer-ring ring-left" />
-          <div className="venn-circle" tabIndex={0} role="button">
-            <span>🧠</span>
-          </div>
-          <div className="venn-label label-top cloud-bubble">Cerebro</div>
-        </div>
-        {/* Círculo superior derecho: Cuerpo */}
-        <div className="venn-item" id="circle-right">
-          <div className="outer-ring ring-right" />
-          <div className="venn-circle" tabIndex={0} role="button">
-            <span>💪</span>
-          </div>
-          <div className="venn-label label-top cloud-bubble">Cuerpo</div>
-        </div>
-        {/* Círculo inferior centrado: Comunidad */}
-        <div className="venn-item" id="circle-bottom">
-          <div className="outer-ring" />
-          <div className="venn-circle" tabIndex={0} role="button">
-            <span>🌍</span>
-          </div>
-          <div className="venn-label label-bottom">Comunidad</div>
-        </div>
-      </div>
+  #cookie-banner .cookie-button {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    font-size: 1rem;
+  }
+}
 
-      {/* Tu script de interacción (latido, click, redirección, etc.) */}
-      <Script
-        src="/script.js"
-        strategy="afterInteractive"
-      />
-    </>
-  )
+/* ===================================================== */
+/* ESTILOS DEL DIAGRAMA VENN (SOLO PARA la página simbiosis) */
+/* ===================================================== */
+
+/* Tamaño y superposición para diagrama Venn real */
+.venn-wrapper {
+  position: relative;
+  width: 480px; /* Más grande para mejor superposición */
+  height: 420px;
+  margin: auto;
+  z-index: 3;
+}
+
+/* Se encapsulan los ítems del Venn dentro de .venn-wrapper */
+.venn-wrapper .venn-item {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Posicionamiento tipo Venn */
+.venn-wrapper #circle-left {
+  top: 60px;
+  left: 60px;
+}
+.venn-wrapper #circle-right {
+  top: 60px;
+  left: 240px;
+}
+.venn-wrapper #circle-bottom {
+  top: 180px;
+  left: 150px;
+}
+
+/* Círculo interior */
+.venn-wrapper .venn-circle {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent; /* Solo el anillo animado será visible */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: none;
+  z-index: 1;
+  transition: background 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
+/* Ajusta el tamaño de las etiquetas para mejor legibilidad */
+.venn-wrapper .venn-label {
+  font-size: 2rem;         /* Más grande */
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: 22px;
+  /* Mantén el resto de estilos y transición */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Muestra la etiqueta solo en hover/focus del círculo */
+.venn-wrapper #circle-left:hover .venn-label,
+.venn-wrapper #circle-left:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #6fe26f;
+  border-color: #6fe26f;
+  color: #2e7d32;
+}
+.venn-wrapper #circle-right:hover .venn-label,
+.venn-wrapper #circle-right:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #ff9c9c;
+  border-color: #ff9c9c;
+  color: #c62828;
+}
+.venn-wrapper #circle-bottom:hover .venn-label,
+.venn-wrapper #circle-bottom:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #9BF6FF;
+  border-color: #9BF6FF;
+  color: #1565c0;
+}
+
+/* Flechas para etiquetas */
+.venn-wrapper .label-top.cloud-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #fff;
+}
+.venn-wrapper .label-bottom::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid #fff;
+}
+
+/* Glow pastel en hover/focus según círculo + etiqueta */
+.venn-wrapper #circle-left:hover .venn-circle,
+.venn-wrapper #circle-left:focus .venn-circle {
+  background: #CAFFBF;
+  box-shadow: 0 0 32px 8px #6fe26f, 0 0 12px #fff;
+  border-color: #6fe26f;
+}
+.venn-wrapper #circle-left:hover .venn-label,
+.venn-wrapper #circle-left:focus .venn-label {
+  box-shadow: 0 0 18px #6fe26f;
+  border-color: #6fe26f;
+  color: #2e7d32;
+}
+
+.venn-wrapper #circle-right:hover .venn-circle,
+.venn-wrapper #circle-right:focus .venn-circle {
+  background: #FFADAD;
+  box-shadow: 0 0 32px 8px #ff9c9c, 0 0 12px #fff;
+  border-color: #ff9c9c;
+}
+.venn-wrapper #circle-right:hover .venn-label,
+.venn-wrapper #circle-right:focus .venn-label {
+  box-shadow: 0 0 18px #ff9c9c;
+  border-color: #ff9c9c;
+  color: #c62828;
+}
+
+.venn-wrapper #circle-bottom:hover .venn-circle,
+.venn-wrapper #circle-bottom:focus .venn-circle {
+  background: #9BF6FF;
+  box-shadow: 0 0 32px 8px #9BF6FF, 0 0 12px #fff;
+  border-color: #9BF6FF;
+}
+.venn-wrapper #circle-bottom:hover .venn-label,
+.venn-wrapper #circle-bottom:focus .venn-label {
+  box-shadow: 0 0 18px #9BF6FF;
+  border-color: #9BF6FF;
+  color: #1565c0;
+}
+
+/* Flechas para etiquetas */
+.venn-wrapper .label-top.cloud-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid #fff;
+}
+.venn-wrapper .label-bottom::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid #fff;
+}
+
+/* Anillos giratorios del color del círculo interno */
+.venn-wrapper .outer-ring {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px dashed transparent; /* Por defecto transparente */
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.venn-wrapper .ring-left {
+  border-color: #6fe26f;
+  animation: haloSpinLeft 12s linear infinite;
+}
+.venn-wrapper .ring-right {
+  border-color: #ff9c9c;
+  animation: haloSpinRight 12s linear infinite;
+}
+.venn-wrapper #circle-bottom .outer-ring {
+  border-color: #9BF6FF;
+  animation: heartbeat 2s infinite;
+}
+
+/* Animaciones */
+@keyframes haloSpinLeft {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(-360deg);}
+}
+@keyframes haloSpinRight {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1);}
+  50% { transform: scale(1.1);}
+}
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+  .venn-wrapper {
+    width: 98vw;
+    height: 60vh;
+    max-width: 340px;
+  }
+  .venn-wrapper .venn-item,
+  .venn-wrapper .venn-circle,
+  .venn-wrapper .outer-ring {
+    width: 120px;
+    height: 120px;
+  }
+  .venn-wrapper #circle-left {
+    top: 18%;
+    left: 5%;
+  }
+  .venn-wrapper #circle-right {
+    top: 18%;
+    left: 55%;
+  }
+  .venn-wrapper #circle-bottom {
+    top: 48%;
+    left: 30%;
+  }
+}
+
+#icono.disabled {
+    cursor: not-allowed;
+}
+
+.venn-wrapper .label-top {
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.venn-wrapper .label-bottom {
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tamaño y posición para diagrama Venn simétrico */
+.venn-wrapper {
+  position: relative;
+  width: 600px;
+  height: 520px;
+  margin: auto;
+}
+
+.venn-wrapper .venn-item {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.venn-wrapper #circle-left {
+  top: 60px;
+  left: 40px;
+}
+.venn-wrapper #circle-right {
+  top: 60px;
+  left: 300px;
+}
+.venn-wrapper #circle-bottom {
+  top: 220px;
+  left: 170px;
+}
+
+.venn-wrapper .venn-circle,
+.venn-wrapper .outer-ring {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.venn-wrapper .venn-circle {
+  background: transparent;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: none;
+  z-index: 1;
+  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+}
+
+/* Etiquetas grandes y siempre en la misma posición */
+.venn-wrapper .venn-label {
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 22px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  position: absolute;
+  transition: opacity 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.venn-wrapper .label-top {
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.venn-wrapper .label-bottom {
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Flechas para etiquetas */
+.venn-wrapper .label-top.cloud-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid #fff;
+}
+.venn-wrapper .label-bottom::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid #fff;
+}
+
+/* Glow pastel en hover/focus según círculo + etiqueta */
+.venn-wrapper #circle-left:hover .venn-circle,
+.venn-wrapper #circle-left:focus .venn-circle {
+  background: #CAFFBF;
+  box-shadow: 0 0 32px 8px #6fe26f, 0 0 12px #fff;
+  border-color: #6fe26f;
+}
+.venn-wrapper #circle-left:hover .venn-label,
+.venn-wrapper #circle-left:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #6fe26f;
+  border-color: #6fe26f;
+  color: #2e7d32;
+}
+
+.venn-wrapper #circle-right:hover .venn-circle,
+.venn-wrapper #circle-right:focus .venn-circle {
+  background: #FFADAD;
+  box-shadow: 0 0 32px 8px #ff9c9c, 0 0 12px #fff;
+  border-color: #ff9c9c;
+}
+.venn-wrapper #circle-right:hover .venn-label,
+.venn-wrapper #circle-right:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #ff9c9c;
+  border-color: #ff9c9c;
+  color: #c62828;
+}
+
+.venn-wrapper #circle-bottom:hover .venn-circle,
+.venn-wrapper #circle-bottom:focus .venn-circle {
+  background: #9BF6FF;
+  box-shadow: 0 0 32px 8px #9BF6FF, 0 0 12px #fff;
+  border-color: #9BF6FF;
+}
+.venn-wrapper #circle-bottom:hover .venn-label,
+.venn-wrapper #circle-bottom:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #9BF6FF;
+  border-color: #9BF6FF;
+  color: #1565c0;
+}
+
+/* Anillos giratorios del color del círculo interno */
+.venn-wrapper .outer-ring {
+  border: 4px dashed transparent;
+  z-index: 0;
+}
+.venn-wrapper .ring-left {
+  border-color: #6fe26f;
+  animation: haloSpinLeft 12s linear infinite;
+}
+.venn-wrapper .ring-right {
+  border-color: #ff9c9c;
+  animation: haloSpinRight 12s linear infinite;
+}
+.venn-wrapper #circle-bottom .outer-ring {
+  border-color: #9BF6FF;
+  animation: heartbeat 2s infinite;
+}
+
+/* Animaciones */
+@keyframes haloSpinLeft {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(-360deg);}
+}
+@keyframes haloSpinRight {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1);}
+  50% { transform: scale(1.1);}
+}
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+  .venn-wrapper {
+    width: 98vw;
+    height: 60vh;
+    max-width: 340px;
+  }
+  .venn-wrapper .venn-item,
+  .venn-wrapper .venn-circle,
+  .venn-wrapper .outer-ring {
+    width: 120px;
+    height: 120px;
+  }
+  .venn-wrapper #circle-left {
+    top: 18%;
+    left: 5%;
+  }
+  .venn-wrapper #circle-right {
+    top: 18%;
+    left: 55%;
+  }
+  .venn-wrapper #circle-bottom {
+    top: 48%;
+    left: 30%;
+  }
+}
+
+#icono.disabled {
+    cursor: not-allowed;
 }
