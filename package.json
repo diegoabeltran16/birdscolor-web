@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/diegoabeltran16/birdscolor-web#readme",
   "dependencies": {
-    "next": "^14.2.3",
+    "next": "^15.5.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "chai": "^5.2.0",
-    "jsdom": "^26.1.0",
-    "mocha": "^11.2.2",
-    "sinon": "^19.0.2"
+    "chai": "^6.2.1",
+    "jsdom": "^27.0.0",
+    "mocha": "^11.7.5",
+    "sinon": "^21.0.0"
   }
 }
