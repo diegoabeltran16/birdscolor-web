@@ -5,7 +5,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 }
 
@@ -20,7 +20,6 @@ body::before {
   /* Conic-gradient con los tonos pastel de la rueda de colores */
   background: conic-gradient(
       #FFADAD, /* Pastel rojo */
-      #FFD6A5, /* Pastel naranja */
       #FDFFB6, /* Pastel amarillo */
       #CAFFBF, /* Pastel verde */
       #9BF6FF, /* Pastel azul */
@@ -44,8 +43,132 @@ body::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
+}
+
+/* --------------------------- */
+/* Layout para páginas de texto */
+/* --------------------------- */
+.content-page {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.content-card {
+  max-width: 720px;
+  width: min(92vw, 780px);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  color: #222;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.pill {
+  display: inline-block;
+  background: #caffbf;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #2e7d32;
+  letter-spacing: 0.2px;
+  margin-bottom: 12px;
+}
+
+.content-card h1 {
+  margin: 4px 0 10px;
+  font-size: 2.1rem;
+}
+
+.lead {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.bullet {
+  padding-left: 20px;
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.solid,
+.ghost,
+.link-tile {
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.solid {
+  background: #9bf6ff;
+  color: #0f3057;
+  padding: 10px 16px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+}
+
+.ghost {
+  background: rgba(0, 0, 0, 0.04);
+  color: #222;
+  padding: 10px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.solid:hover,
+.ghost:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+.link-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 16px 0 18px;
+}
+
+.link-tile {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: #111;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.link-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
+}
+
+.link-tile:focus-visible,
+.solid:focus-visible,
+.ghost:focus-visible,
+.cookie-button:focus-visible,
+.venn-item .venn-circle:focus-visible {
+  outline: 3px solid #222;
+  outline-offset: 4px;
 }
 
 /* Imagen del pollito con efecto de latido a 60 BPM */
@@ -130,13 +253,14 @@ body::before {
 .cookie-button {
   background-color: rgba(255, 255, 255, 0.6);
   border: 1px solid #ccc;
-  padding: 8px 12px;
+  padding: 12px 18px;
   margin: 5px;
   font-size: 1rem;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
+  min-width: 120px;
 }
 
 .cookie-button:hover {

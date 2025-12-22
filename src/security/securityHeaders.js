@@ -29,24 +29,20 @@ const securityHeaders = [
     value: 'max-age=63072000; includeSubDomains; preload',
   },
 
-  // 2. CSP (Content Security Policy) básica:
-  //    - default-src 'self': solo cargar recursos del mismo origen.
-  //    - script-src 'self': permitir scripts solo desde nuestro dominio.
-  //    - style-src 'self' 'unsafe-inline': estilos solo de nuestro dominio
-  //        y permitir estilos inline controlados (por ejemplo, Tailwind CSS).
-  //    - img-src 'self' data: https://trusted.cdn.com: permitir imágenes desde nuestro dominio,
-  //        datos en base64 (data:), y un CDN específico de medios.
-  //    - font-src 'self': permitir fuentes solo desde nuestro dominio.
-  //    - connect-src 'self' https://api.birdscolor.com: conexiones XHR/fetch a nuestro API.
+  // 2. CSP alineada con el sitio estatico actual (pollito + GA). Ajusta si quitas GA.
+  //    - inline style necesario para atributos style puntuales (spinner display, etc.).
   {
     key: 'Content-Security-Policy',
     value:
       "default-src 'self'; " +
-      "script-src 'self'; " +
+      "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; " +
       "style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data: https://trusted.cdn.com; " +
+      "img-src 'self' data:; " +
       "font-src 'self'; " +
-      "connect-src 'self' https://api.birdscolor.com",
+      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; " +
+      "object-src 'none'; " +
+      "frame-ancestors 'none'; " +
+      "base-uri 'self'",
   },
 
   // 3. Protege contra sniffing de tipo de contenido.
@@ -61,6 +57,12 @@ const securityHeaders = [
     value: 'DENY',
   },
 
+  // 4.1. Limita permisos de hardware/sensores no usados.
+  {
+    key: 'Permissions-Policy',
+    value: 'geolocation=(), microphone=(), camera=(), payment=()'
+  },
+
   // 5. Política de Referrer: solo enviar referer dentro del mismo origen.
   {
     key: 'Referrer-Policy',
@@ -71,6 +73,12 @@ const securityHeaders = [
   {
     key: 'X-XSS-Protection',
     value: '1; mode=block',
+  },
+
+  // 7. Protege recursos contra ser cargados por otros origenes.
+  {
+    key: 'Cross-Origin-Resource-Policy',
+    value: 'same-origin',
   }
 ];
 
