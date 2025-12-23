@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Simbiosis – Diagrama Venn</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="venn-wrapper">
+      <div class="venn-item" id="circle-left">
+        <div class="outer-ring ring-left"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Cerebro">
+          <span>🧠</span>
+        </div>
+        <div class="venn-label label-top cloud-bubble">Cerebro</div>
+      </div>
+
+      <div class="venn-item" id="circle-right">
+        <div class="outer-ring ring-right"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Cuerpo">
+          <span>💪</span>
+        </div>
+        <div class="venn-label label-top cloud-bubble">Cuerpo</div>
+      </div>
+
+      <div class="venn-item" id="circle-bottom">
+        <div class="outer-ring"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Comunidad">
+          <span>🌍</span>
+        </div>
+        <div class="venn-label label-bottom">Comunidad</div>
+      </div>
+    </div>
+
+    <script defer src="/modules/language.js"></script>
+    <script defer src="/modules/cookies.js"></script>
+    <script>
+      const destinosPermitidos = Object.freeze({
+        'circle-left': '/vision_es/',
+        'circle-right': '/mision_es/',
+        'circle-bottom': '/comunidad/'
+      });
+
+      const navegarSeguro = (ruta) => {
+        if (typeof ruta === 'string' && ruta.startsWith('/')) {
+          window.location.href = ruta;
+        }
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.venn-item').forEach((item) => {
+          const destino = destinosPermitidos[item.id];
+          if (!destino) return;
+
+          const ir = () => navegarSeguro(destino);
+          item.addEventListener('click', ir);
+          item.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              ir();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -19,10 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ 1. Activar latido simbiótico desde el inicio
   icono.classList.add("heartbeat");
+  icono.classList.remove("bounce");
+  icono.style.removeProperty("display");
+  if (spinnerWrapper) spinnerWrapper.style.display = "none";
 
   // 🛡️ 2. Bloquear el clic hasta que el usuario decida cookies
   window.isPollitoEnabled = false; // se habilita luego desde cookies.js
   icono.classList.add("disabled"); // opcional: estilo visual deshabilitado
+
+  // Si ya había consentimiento guardado, habilita de inmediato
+  if (localStorage.getItem("cookiesConsent")) {
+    window.isPollitoEnabled = true;
+    icono.classList.remove("disabled");
+  }
 
   // 🧪 3. Verifica si ya hay consentimiento guardado
   const consent = localStorage.getItem("cookiesConsent");

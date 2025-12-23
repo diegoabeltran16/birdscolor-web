@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Symbiosis – Venn Diagram</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="venn-wrapper">
+      <div class="venn-item" id="circle-left">
+        <div class="outer-ring ring-left"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Brain">
+          <span>🧠</span>
+        </div>
+        <div class="venn-label label-top cloud-bubble">Brain</div>
+      </div>
+
+      <div class="venn-item" id="circle-right">
+        <div class="outer-ring ring-right"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Body">
+          <span>💪</span>
+        </div>
+        <div class="venn-label label-top cloud-bubble">Body</div>
+      </div>
+
+      <div class="venn-item" id="circle-bottom">
+        <div class="outer-ring"></div>
+        <div class="venn-circle" tabindex="0" role="button" aria-label="Community">
+          <span>🌍</span>
+        </div>
+        <div class="venn-label label-bottom">Community</div>
+      </div>
+    </div>
+
+    <script defer src="/modules/language.js"></script>
+    <script defer src="/modules/cookies.js"></script>
+    <script>
+      const navDestinations = Object.freeze({
+        'circle-left': '/vision_en/',
+        'circle-right': '/mission_en/',
+        'circle-bottom': '/community/'
+      });
+
+      const navigateSafe = (path) => {
+        if (typeof path === 'string' && path.startsWith('/')) {
+          window.location.href = path;
+        }
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.venn-item').forEach((item) => {
+          const destination = navDestinations[item.id];
+          if (!destination) return;
+
+          const handleNavigate = () => navigateSafe(destination);
+          item.addEventListener('click', handleNavigate);
+          item.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleNavigate();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
