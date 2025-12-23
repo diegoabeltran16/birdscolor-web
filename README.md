@@ -1,14 +1,14 @@
 # 🐤 BirdsColor
 
-**BirdsColor** es una experiencia web interactiva que explora la relación entre tecnología, lenguaje, aprendizaje y naturaleza 🌱. Desarrollado como un proyecto modular y educativo, está diseñado para demostrar habilidades en desarrollo frontend moderno, integración continua (CI/CD), accesibilidad, y despliegue automatizado.
+**BirdsColor** es una experiencia web interactiva que explora la relación entre tecnología, lenguaje, aprendizaje y naturaleza 🌱. Desarrollado como un proyecto modular y educativo, demuestra habilidades en desarrollo frontend moderno, integración continua (CI/CD), accesibilidad y despliegue automatizado.
 
----
+----
 
 ## 🎯 Propósito del Repositorio
 
-Este repositorio es mi **portafolio técnico** y punto de partida para la evolución de mi carrera profesional. 
+Este repositorio es un portafolio técnico y punto de partida para la evolución profesional del autor.
 
-Es ideal para reclutadores que deseen evaluar:
+Ideal para reclutadores que deseen evaluar:
 
 - Buenas prácticas de desarrollo
 - Modularidad en JavaScript moderno
@@ -17,7 +17,7 @@ Es ideal para reclutadores que deseen evaluar:
 - Accesibilidad y diseño responsive
 - Capacidad de documentación clara y organizada
 
----
+----
 
 ## 🧪 Tecnologías Clave
 
@@ -27,39 +27,39 @@ Es ideal para reclutadores que deseen evaluar:
 - GitHub Pages + GoDaddy (Despliegue)
 - Arquitectura modular + diseño progresivo
 
----
+----
 
 ## 🚀 Despliegue
 
-El sitio está desplegado automáticamente en:
+El sitio se publica automáticamente en:
 
 🔗 [https://birdscolor.com](https://birdscolor.com) (via GoDaddy + GitHub Pages)
 
----
+----
 
 ## 📌 Destacados Técnicos
 
-- ✅ Navegación inteligente basada en idioma del navegador
+- ✅ Navegación inteligente basada en el idioma del navegador
 - ✅ Consentimiento de cookies con almacenamiento local
 - ✅ Interfaz visual animada y responsiva
 - ✅ Pruebas con mocks y temporizadores virtuales
-- ✅ GitHub Actions para testing y despliegue automático
+- ✅ GitHub Actions para testing y despliegue automatizado
 
----
+----
 
 ## 🤝 Contacto del Desarrollador
 
-**Diego Beltrán** – [@diegoabeltran16](https://github.com/diegoabeltran16)  
+**Diego Beltrán** – [@diegoabeltran16](https://github.com/diegoabeltran16)
 
----
+----
 
 ## 🔒 Despliegue estático seguro (sin npm en producción)
 
-- **Artefacto**: solo publica la carpeta `public/` (HTML, CSS, JS planos). No subas `node_modules` ni corras `npm` en el servidor.
-- **Servidor estático/CDN**: apunta el host raíz a `public/`. Un `python -m http.server 8080` ya sirve localmente para pruebas.
-- **Cabeceras**: aplica las de `src/security/securityHeaders.js` o el ejemplo listo en `security/static-headers.conf` (nginx-style). Asegura HTTPS para que HSTS tenga efecto.
-- **CSP ajustado al sitio**: si quitas Google Analytics, elimina sus dominios de `script-src` y `connect-src`. Si añades otro script/CDN, decláralo ahí.
-- **TercerOS**: menos es más. Cada script externo es superficie de ataque; mantén solo lo indispensable.
-- **Ciclo de cambios**: realiza cambios locales, revisa, y sube únicamente los archivos estáticos resultantes. Las auditorías npm (si las usas) se ejecutan solo en tu máquina, no en producción.
+- **Artefacto**: publicar únicamente la carpeta `public/` (HTML, CSS, JS planos). No subir `node_modules` ni ejecutar `npm` en el servidor.
+- **Servidor estático/CDN**: apuntar el host raíz a `public/`. Un `python -m http.server 8080` sirve localmente para pruebas.
+- **Cabeceras**: aplicar las de `src/security/securityHeaders.js` o el ejemplo en `security/static-headers.conf` (estilo nginx). Asegurar HTTPS para que HSTS tenga efecto.
+- **CSP ajustado al sitio**: al eliminar Google Analytics, retirar sus dominios de `script-src` y `connect-src`. Al añadir otro script/CDN, declararlo explícitamente.
+- **TercerOS**: menos es más. Cada script externo incrementa la superficie de ataque; conservar solo lo indispensable.
+- **Ciclo de cambios**: realizar cambios localmente, revisar, y subir únicamente los archivos estáticos resultantes. Las auditorías npm (si se ejecutan) deben realizarse en la máquina del desarrollador, no en producción.
 
 
