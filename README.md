@@ -62,15 +62,3 @@ El sitio se publica automáticamente en:
 - **TercerOS**: menos es más. Cada script externo incrementa la superficie de ataque; conservar solo lo indispensable.
 - **Ciclo de cambios**: realizar cambios localmente, revisar, y subir únicamente los archivos estáticos resultantes. Las auditorías npm (si se ejecutan) deben realizarse en la máquina del desarrollador, no en producción.
 
----
-
-## 🔒 Despliegue estático seguro (sin npm en producción)
-
-- **Artefacto**: solo publica la carpeta `public/` (HTML, CSS, JS planos). No subas `node_modules` ni corras `npm` en el servidor.
-- **Servidor estático/CDN**: apunta el host raíz a `public/`. Un `python -m http.server 8080` ya sirve localmente para pruebas.
-- **Cabeceras**: aplica las de `src/security/securityHeaders.js` o el ejemplo listo en `security/static-headers.conf` (nginx-style). Asegura HTTPS para que HSTS tenga efecto.
-- **CSP ajustado al sitio**: si quitas Google Analytics, elimina sus dominios de `script-src` y `connect-src`. Si añades otro script/CDN, decláralo ahí.
-- **TercerOS**: menos es más. Cada script externo es superficie de ataque; mantén solo lo indispensable.
-- **Ciclo de cambios**: realiza cambios locales, revisa, y sube únicamente los archivos estáticos resultantes. Las auditorías npm (si las usas) se ejecutan solo en tu máquina, no en producción.
-
-
