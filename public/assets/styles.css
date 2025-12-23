@@ -5,7 +5,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
   min-height: 100vh;
+
+  height: 100vh;
   position: relative;
 }
 
@@ -20,6 +23,9 @@ body::before {
   /* Conic-gradient con los tonos pastel de la rueda de colores */
   background: conic-gradient(
       #FFADAD, /* Pastel rojo */
+
+
+      #FFD6A5, /* Pastel naranja */
       #FDFFB6, /* Pastel amarillo */
       #CAFFBF, /* Pastel verde */
       #9BF6FF, /* Pastel azul */
@@ -45,6 +51,7 @@ body::before {
   align-items: center;
   min-height: 100vh;
   z-index: 1; /* Asegura que el pollito y el spinner estén sobre el fondo */
+
 }
 
 /* --------------------------- */
@@ -198,6 +205,7 @@ body::before {
 
 .bounce {
   animation: bounce 0.5s;
+
 }
 
 /* Contenedor centrado para evitar conflictos de transform */
@@ -208,6 +216,19 @@ body::before {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
+
+
+}
+
+/* Contenedor centrado para evitar conflictos de transform */
+.spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
 
 /* Spinner giratorio sin modificar el posicionamiento */
 .spinner {
@@ -442,6 +463,68 @@ body::before {
   border-left: 14px solid transparent;
   border-right: 14px solid transparent;
   border-bottom: 14px solid #fff;
+}
+
+/* Efectos hover/focus - Círculo izquierdo (verde) */
+.venn-wrapper #circle-left:hover .venn-circle,
+.venn-wrapper #circle-left:focus .venn-circle {
+  background: #CAFFBF;
+  box-shadow: 0 0 32px 8px #6fe26f, 0 0 12px #fff;
+  border-color: #6fe26f;
+}
+.venn-wrapper #circle-left:hover .venn-label,
+.venn-wrapper #circle-left:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #6fe26f;
+  border-color: #6fe26f;
+  color: #2e7d32;
+}
+
+/* Efectos hover/focus - Círculo derecho (rojo) */
+.venn-wrapper #circle-right:hover .venn-circle,
+.venn-wrapper #circle-right:focus .venn-circle {
+  background: #FFADAD;
+  box-shadow: 0 0 32px 8px #ff9c9c, 0 0 12px #fff;
+  border-color: #ff9c9c;
+}
+.venn-wrapper #circle-right:hover .venn-label,
+.venn-wrapper #circle-right:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #ff9c9c;
+  border-color: #ff9c9c;
+  color: #c62828;
+}
+
+/* Efectos hover/focus - Círculo inferior (azul) */
+.venn-wrapper #circle-bottom:hover .venn-circle,
+.venn-wrapper #circle-bottom:focus .venn-circle {
+  background: #9BF6FF;
+  box-shadow: 0 0 32px 8px #9BF6FF, 0 0 12px #fff;
+  border-color: #9BF6FF;
+}
+.venn-wrapper #circle-bottom:hover .venn-label,
+.venn-wrapper #circle-bottom:focus .venn-label {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 18px #9BF6FF;
+  border-color: #9BF6FF;
+  color: #1565c0;
+}
+
+/* Oculta el anillo animado al hacer hover/focus en el círculo */
+.venn-wrapper #circle-left:hover .outer-ring,
+.venn-wrapper #circle-left:focus .outer-ring,
+.venn-wrapper #circle-right:hover .outer-ring,
+.venn-wrapper #circle-right:focus .outer-ring,
+.venn-wrapper #circle-bottom:hover .outer-ring,
+.venn-wrapper #circle-bottom:focus .outer-ring {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+=======
 }
 
 /* Efectos hover/focus - Círculo izquierdo (verde) */

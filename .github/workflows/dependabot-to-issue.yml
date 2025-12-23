@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Fetch open Dependabot alerts
         id: fetch_alerts
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GH_PAT_FINEGRAINED }}
           script: |
@@ -28,7 +28,7 @@ jobs:
             return response.data;
 
       - name: Create issues for all Dependabot alerts
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           ALERTS_PAYLOAD: ${{ steps.fetch_alerts.outputs.result }}
         with:
