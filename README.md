@@ -62,4 +62,3 @@ El sitio se publica automáticamente en:
 - **TercerOS**: menos es más. Cada script externo incrementa la superficie de ataque; conservar solo lo indispensable.
 - **Ciclo de cambios**: realizar cambios localmente, revisar, y subir únicamente los archivos estáticos resultantes. Las auditorías npm (si se ejecutan) deben realizarse en la máquina del desarrollador, no en producción.
 
-
