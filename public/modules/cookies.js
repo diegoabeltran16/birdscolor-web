@@ -24,7 +24,8 @@ const textos = {
     elegir: "Choose"
   }
 };
-const t = textos[lang];
+const langKey = Object.prototype.hasOwnProperty.call(textos, lang) ? lang : "es";
+const t = textos[langKey];
 
 // Crear banner
 const banner = document.createElement("div");
@@ -46,16 +47,30 @@ Object.assign(banner.style, {
   boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)"
 });
 
-// Contenido del banner
-banner.innerHTML = `
-  <p style="font-size: 1.1rem; margin-bottom: 10px;">${t.mensaje}</p>
-  <div>
-    <button class="cookie-button" id="accept-cookies">✅ ${t.aceptar}</button>
-    <button class="cookie-button" id="accept-essential">🍪 ${t.esenciales}</button>
-    <button class="cookie-button" id="reject-cookies">❌ ${t.rechazar}</button>
-    <button class="cookie-button" id="choose-cookies">🎛️ ${t.elegir}</button>
-  </div>
-`;
+// Contenido del banner sin innerHTML para evitar re-interpretación de HTML
+const message = document.createElement("p");
+message.style.fontSize = "1.1rem";
+message.style.marginBottom = "10px";
+message.textContent = t.mensaje;
+
+const buttonRow = document.createElement("div");
+const createButton = (id, label) => {
+  const button = document.createElement("button");
+  button.className = "cookie-button";
+  button.id = id;
+  button.type = "button";
+  button.textContent = label;
+  return button;
+};
+
+const acceptAllBtn = createButton("accept-cookies", `✅ ${t.aceptar}`);
+const acceptEssentialBtn = createButton("accept-essential", `🍪 ${t.esenciales}`);
+const rejectBtn = createButton("reject-cookies", `❌ ${t.rechazar}`);
+const chooseBtn = createButton("choose-cookies", `🎛️ ${t.elegir}`);
+
+buttonRow.append(acceptAllBtn, acceptEssentialBtn, rejectBtn, chooseBtn);
+
+banner.append(message, buttonRow);
 
 // Insertar banner en el body (está garantizado que este script se ejecuta en el cliente)
 document.body.appendChild(banner);
@@ -76,19 +91,19 @@ function hideCookieBannerAndEnablePollito() {
 }
 
 // Asignar eventos a botones
-document.getElementById("accept-cookies").addEventListener("click", () => {
+acceptAllBtn.addEventListener("click", () => {
   localStorage.setItem("cookiesConsent", "all");
   hideCookieBannerAndEnablePollito();
 });
-document.getElementById("accept-essential").addEventListener("click", () => {
+acceptEssentialBtn.addEventListener("click", () => {
   localStorage.setItem("cookiesConsent", "essential");
   hideCookieBannerAndEnablePollito();
 });
-document.getElementById("reject-cookies").addEventListener("click", () => {
+rejectBtn.addEventListener("click", () => {
   localStorage.setItem("cookiesConsent", "none");
   hideCookieBannerAndEnablePollito();
 });
-document.getElementById("choose-cookies").addEventListener("click", () => {
+chooseBtn.addEventListener("click", () => {
   localStorage.setItem("cookiesConsent", "custom");
   console.log("[cookies] Usuario quiere elegir cookies (futuro modal)");
   hideCookieBannerAndEnablePollito();
